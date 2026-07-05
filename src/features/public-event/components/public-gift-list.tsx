@@ -5,6 +5,7 @@ import { useMemo, useState } from "react";
 import { GiftIcon, Search } from "lucide-react";
 
 import { MarkGiftPurchasedButton } from "@/features/public-event/components/mark-gift-purchased-button";
+import { PurchaseGiftButton } from "@/features/public-event/components/purchase-gift-button";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -180,15 +181,14 @@ export function PublicGiftList({ eventSlug, gifts }: PublicGiftListProps) {
 
                             <div className="grid gap-3 border-t-2 border-[#F1D7A5] bg-[#FFF8E7] p-5">
                                 {gift.originalUrl ? (
-                                    <Button
-                                        asChild
-                                        variant="outline"
-                                        className="h-12 rounded-full border-2 border-[#E7C37B] bg-white text-sm font-extrabold text-[#5A371C] hover:bg-[#FFF1C9]"
-                                    >
-                                        <a href={gift.originalUrl} target="_blank" rel="noreferrer">
-                                            Ver tienda
-                                        </a>
-                                    </Button>
+                                    <PurchaseGiftButton
+                                        originalUrl={gift.originalUrl}
+                                        giftId={gift.id}
+                                        eventSlug={eventSlug}
+                                        giftName={gift.name}
+                                        quantity={gift.quantity}
+                                        purchasedQuantity={gift.purchasedQuantity}
+                                    />
                                 ) : null}
 
                                 <MarkGiftPurchasedButton

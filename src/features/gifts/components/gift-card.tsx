@@ -141,7 +141,7 @@ export function GiftCard({ gift }: GiftCardProps) {
                         rel="noreferrer"
                         className="inline-flex h-11 items-center justify-center rounded-full border-2 border-[#E8C78A] bg-white px-4 text-sm font-black text-[#5A371C] transition hover:bg-[#FFF1C9]"
                     >
-                        Ver tienda
+                        Ver en tienda
                         <ExternalLink className="ml-2 size-4" />
                     </a>
                 ) : null}

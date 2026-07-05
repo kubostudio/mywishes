@@ -8,6 +8,7 @@ import { PublicGiftList } from "@/features/public-event/components/public-gift-l
 import type { Metadata } from "next";
 import { CountdownLabel } from "@/features/public-event/components/countdown-label";
 import { ForestDecor } from "@/components/storybook/story-decor";
+import { PendingPurchasePrompt } from "@/features/public-event/components/pending-purchase-prompt";
 
 type PublicEventPageProps = {
     params: Promise<{
@@ -162,6 +163,7 @@ export default async function PublicEventPage({ params }: PublicEventPageProps) 
                     </Button>
                 </div>
             </section> */}
+            <PendingPurchasePrompt />
         </main>
     );
 }
