@@ -22,6 +22,24 @@ function getMetaContent(html: string, property: string) {
     return html.match(regex)?.[1];
 }
 
+function getTitle(html: string) {
+    return html.match(/<title[^>]*>(.*?)<\/title>/i)?.[1]?.trim();
+}
+
+function nameFromUrl(url: URL) {
+    const lastPath = url.pathname.split("/").filter(Boolean).at(-1);
+
+    if (!lastPath) return undefined;
+
+    return lastPath
+        .replace(/\.html$/i, "")
+        .replace(/p\d+/gi, "")
+        .replace(/-/g, " ")
+        .replace(/\s+/g, " ")
+        .trim()
+        .replace(/\b\w/g, (letter) => letter.toUpperCase());
+}
+
 function getJsonLdBlocks(html: string) {
     const matches = html.matchAll(
         /<script[^>]+type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi
@@ -60,7 +78,6 @@ function findProductJsonLd(blocks: unknown[]): any | null {
 
 function normalizeBrand(brand: unknown) {
     if (!brand) return undefined;
-
     if (typeof brand === "string") return brand;
 
     if (typeof brand === "object" && "name" in brand) {
@@ -72,7 +89,6 @@ function normalizeBrand(brand: unknown) {
 
 function normalizeImage(image: unknown) {
     if (!image) return undefined;
-
     if (typeof image === "string") return image;
 
     if (Array.isArray(image)) {
@@ -99,30 +115,37 @@ export async function fetchProductMetadataAction(
     try {
         const parsedUrl = new URL(url);
 
-        const response = await fetch(parsedUrl.toString(), {
-            headers: {
-                "User-Agent": "Mozilla/5.0",
-            },
-            cache: "no-store",
-        });
+        let html = "";
 
-        if (!response.ok) {
-            return {
-                success: false,
-                message: "No se pudo leer la página del producto.",
-            };
+        try {
+            const response = await fetch(parsedUrl.toString(), {
+                headers: {
+                    "User-Agent":
+                        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36",
+                    Accept:
+                        "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+                    "Accept-Language": "es-PE,es;q=0.9,en;q=0.8",
+                },
+                cache: "no-store",
+            });
+
+            if (response.ok) {
+                html = await response.text();
+            }
+        } catch {
+            html = "";
         }
 
-        const html = await response.text();
-
-        const jsonLdBlocks = getJsonLdBlocks(html);
+        const jsonLdBlocks = html ? getJsonLdBlocks(html) : [];
         const productJsonLd = findProductJsonLd(jsonLdBlocks);
         const offer = normalizeOffer(productJsonLd?.offers);
 
         const title =
             productJsonLd?.name ||
             getMetaContent(html, "og:title") ||
-            getMetaContent(html, "twitter:title");
+            getMetaContent(html, "twitter:title") ||
+            getTitle(html) ||
+            nameFromUrl(parsedUrl);
 
         const imageUrl =
             normalizeImage(productJsonLd?.image) ||
@@ -132,7 +155,8 @@ export async function fetchProductMetadataAction(
         const brand =
             normalizeBrand(productJsonLd?.brand) ||
             getMetaContent(html, "product:brand") ||
-            getMetaContent(html, "og:brand");
+            getMetaContent(html, "og:brand") ||
+            "Zara";
 
         const price =
             offer.price ||
@@ -142,11 +166,14 @@ export async function fetchProductMetadataAction(
         const currency =
             offer.currency ||
             getMetaContent(html, "product:price:currency") ||
-            getMetaContent(html, "og:price:currency");
+            getMetaContent(html, "og:price:currency") ||
+            "PEN";
 
         return {
             success: true,
-            message: "Datos obtenidos correctamente.",
+            message: html
+                ? "Datos obtenidos correctamente."
+                : "No se pudo leer toda la página, pero completamos datos básicos.",
             data: {
                 name: title,
                 imageUrl,
