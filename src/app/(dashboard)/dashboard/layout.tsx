@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Gift, Sparkles } from "lucide-react";
 
 import { LogoutButton } from "@/features/auth/components/logout-button";
+import { HoneyBackground } from "@/components/storybook/story-decor";
 
 export default function DashboardLayout({
     children,
@@ -10,6 +11,7 @@ export default function DashboardLayout({
 }) {
     return (
         <div className="min-h-screen bg-[linear-gradient(180deg,#FFF8E8,#FFEFC4)]">
+            <HoneyBackground />
             <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
                 <div className="absolute -left-24 top-10 size-80 rounded-full bg-[#FFD9E2]/70 blur-3xl" />
                 <div className="absolute right-0 top-24 size-96 rounded-full bg-[#BDEBFF]/70 blur-3xl" />
