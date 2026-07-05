@@ -153,13 +153,13 @@ export function LoginForm() {
                 <div className="h-0.5 flex-1 bg-[#F1D7A5]" />
             </div>
 
-            <button
+            {/* <button
                 type="button"
                 onClick={handleGoogleLogin}
                 className="inline-flex h-12 w-full items-center justify-center rounded-full border-2 border-[#E8C78A] bg-white px-6 text-sm font-black text-[#5A371C] transition hover:bg-[#FFF1C9]"
             >
                 Continuar con Google
-            </button>
+            </button> */}
 
             <p className="mt-6 text-center text-sm font-semibold text-[#7A4E28]">
                 ¿No tienes cuenta?{" "}
