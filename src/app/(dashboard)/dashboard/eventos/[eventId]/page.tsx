@@ -10,7 +10,7 @@ import { EditEventDialog } from "@/features/events/components/edit-event-dialog"
 import { DeleteEventButton } from "@/features/events/components/delete-event-button";
 import { SortableGiftList } from "@/features/gifts/components/sortable-gift-list";
 import { SortGiftsButtons } from "@/features/gifts/components/sort-gifts-buttons";
-
+import { ForestDecor } from "@/components/storybook/story-decor";
 import { Gift, Heart, Share2, Settings, Sparkles, CalendarDays, MapPin } from "lucide-react";
 
 import { StoryBadge } from "@/components/storybook/story-badge";
@@ -87,7 +87,8 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
     const daysUntilEvent = getDaysUntil(event.date);
 
     return (
-        <div className="space-y-8">
+        <div className="relative space-y-8 overflow-hidden">
+            <ForestDecor sections={6} />
             <div>
                 <StoryLinkButton href="/dashboard" variant="cream">
                     ← Volver a eventos

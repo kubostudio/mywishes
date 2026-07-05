@@ -42,8 +42,8 @@ export default async function PublicEventPage({ params }: PublicEventPageProps) 
     }
 
     return (
-        <main className="min-h-screen bg-[linear-gradient(180deg,#FFF8E8,#FFEFC4)]">
-            <ForestDecor />
+        <main className="relative min-h-screen overflow-hidden bg-[linear-gradient(180deg,#FFF8E8,#FFEFC4)]">
+            <ForestDecor sections={6} />
             <section className="relative overflow-hidden border-b-2 border-[#F1D7A5] bg-[#FFF8E8]">
                 <div className="absolute -left-20 top-10 size-72 rounded-full bg-[#FFD9E2]/70 blur-3xl" />
                 <div className="absolute right-0 top-16 size-80 rounded-full bg-[#BDEBFF]/70 blur-3xl" />
