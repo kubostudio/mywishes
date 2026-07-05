@@ -267,3 +267,89 @@
       0 32px 100px oklch(0.42 0.08 55 / 0.2);
   }
 }
+
+@keyframes cloud-drift {
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  50% {
+    transform: translateX(18px);
+  }
+}
+
+@keyframes bee-float {
+
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(-4deg);
+  }
+
+  25% {
+    transform: translate(10px, -8px) rotate(5deg);
+  }
+
+  50% {
+    transform: translate(20px, 4px) rotate(-2deg);
+  }
+
+  75% {
+    transform: translate(8px, 10px) rotate(4deg);
+  }
+}
+
+@keyframes honey-drop {
+
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+
+  50% {
+    transform: translateY(10px) scale(0.96);
+  }
+}
+
+.animate-cloud-drift {
+  animation: cloud-drift 8s ease-in-out infinite;
+}
+
+.animate-cloud-drift-slow {
+  animation: cloud-drift 12s ease-in-out infinite;
+}
+
+.animate-bee-float {
+  animation: bee-float 5s ease-in-out infinite;
+}
+
+.animate-bee-float-delayed {
+  animation: bee-float 6s ease-in-out infinite;
+  animation-delay: 1.2s;
+}
+
+.animate-honey-drop {
+  animation: honey-drop 4s ease-in-out infinite;
+}
+
+@keyframes honey-drop-delayed {
+
+  0%,
+  100% {
+    transform: translateY(0) scale(1) rotate(-6deg);
+  }
+
+  50% {
+    transform: translateY(14px) scale(0.94) rotate(4deg);
+  }
+}
+
+.animate-honey-drop-delayed {
+  animation: honey-drop-delayed 5.5s ease-in-out infinite;
+  animation-delay: 1.2s;
+}
+
+.opacity-18 {
+  opacity: 0.18;
+}

@@ -69,7 +69,7 @@ function getDaysUntil(date: Date) {
     return Math.ceil(
         (eventDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)
     );
-}   
+}
 
 export default async function EventDetailPage({ params }: EventDetailPageProps) {
     const { eventId } = await params;
@@ -173,14 +173,14 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
                                 <p className="text-2xl font-bold text-[#2F6B4F]">
                                     {availableGifts.length}
                                 </p>
-                                <p className="text-xs font-bold text-[#4B8067]">Libres</p>
+                                <p className="text-xs font-bold text-[#4B8067]">Disponibles</p>
                             </div>
 
                             <div className="rounded-2xl bg-[#FFF0F4] p-3">
                                 <p className="text-2xl font-bold text-[#9A4660]">
                                     {purchasedGifts.length}
                                 </p>
-                                <p className="text-xs font-bold text-[#9A4660]">Tomados</p>
+                                <p className="text-xs font-bold text-[#9A4660]">Comprados</p>
                             </div>
                         </div>
 
