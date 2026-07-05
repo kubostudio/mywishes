@@ -27,7 +27,6 @@ function giftToViewModel(gift: {
     id: string;
     eventId: string;
     name: string;
-    honoreeName: string;
     imageUrl: string | null;
     brand: string | null;
     price: { toString(): string } | null;
