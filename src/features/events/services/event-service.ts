@@ -21,6 +21,7 @@ export async function createEvent(creatorId: string, input: EventInput) {
         data: {
             type: input.type,
             name: input.name,
+            honoreeName: input.honoreeName,
             date: new Date(input.date),
             location: input.location,
             description: input.description || null,
