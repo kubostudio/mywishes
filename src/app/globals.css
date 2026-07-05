@@ -1,0 +1,269 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-heading: var(--font-sans);
+
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --radius-sm: 0.8rem;
+  --radius-md: 1rem;
+  --radius-lg: 1.25rem;
+  --radius-xl: 1.6rem;
+  --radius-2xl: 2rem;
+  --radius-3xl: 2.5rem;
+}
+
+:root {
+  --background: oklch(0.975 0.045 86);
+  --foreground: oklch(0.26 0.055 55);
+
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.26 0.055 55);
+
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.26 0.055 55);
+
+  --primary: oklch(0.78 0.16 78);
+  --primary-foreground: oklch(0.24 0.06 55);
+
+  --secondary: oklch(0.91 0.075 84);
+  --secondary-foreground: oklch(0.30 0.065 55);
+
+  --muted: oklch(0.94 0.045 82);
+  --muted-foreground: oklch(0.50 0.05 58);
+
+  --accent: oklch(0.83 0.105 62);
+  --accent-foreground: oklch(0.25 0.06 55);
+
+  --destructive: oklch(0.61 0.22 28);
+
+  --border: oklch(0.86 0.055 78);
+  --input: oklch(0.86 0.055 78);
+  --ring: oklch(0.78 0.16 78);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html,
+  body {
+    font-family: var(--font-sans), system-ui, sans-serif;
+  }
+
+  html {
+    @apply font-sans;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    min-height: 100vh;
+    /* background:
+      radial-gradient(circle at 8% 8%, oklch(0.9 0.12 86 / 0.7), transparent 22rem),
+      radial-gradient(circle at 88% 12%, oklch(0.82 0.09 62 / 0.38), transparent 24rem),
+      radial-gradient(circle at 50% 0%, oklch(0.95 0.08 95 / 0.65), transparent 34rem),
+      linear-gradient(180deg, oklch(0.985 0.045 88), oklch(0.94 0.055 78)); */
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-black tracking-tight;
+  }
+
+  ::selection {
+    background: oklch(0.86 0.12 80 / 0.45);
+  }
+}
+
+@layer components {
+  .honey-app {
+    background:
+      radial-gradient(circle at 8% 8%, oklch(0.93 0.12 85 / 0.8), transparent 24rem),
+      radial-gradient(circle at 92% 10%, oklch(0.88 0.09 48 / 0.45), transparent 26rem),
+      linear-gradient(180deg, oklch(0.985 0.045 90), oklch(0.94 0.055 78));
+  }
+
+  .honey-header {
+    border-bottom: 3px solid oklch(0.84 0.08 78);
+    background: oklch(1 0 0 / 0.78);
+    backdrop-filter: blur(20px);
+  }
+
+  .honey-logo {
+    border-radius: 1.25rem;
+    background: oklch(0.78 0.16 78);
+    color: oklch(0.24 0.06 55);
+    box-shadow:
+      0 4px 0 oklch(0.58 0.1 58 / 0.45),
+      0 14px 28px oklch(0.72 0.13 70 / 0.28);
+  }
+
+  .text-bear {
+    color: oklch(0.28 0.07 55);
+  }
+
+  .text-honey-muted {
+    color: oklch(0.48 0.06 58);
+  }
+
+  .honey-nav-link,
+  .honey-mini-badge,
+  .honey-pill {
+    border-radius: 999px;
+    border: 2px solid oklch(0.82 0.09 78);
+    background: oklch(0.95 0.09 88);
+    color: oklch(0.32 0.07 55);
+    padding: 0.5rem 0.9rem;
+    font-size: 0.875rem;
+    font-weight: 900;
+    line-height: 1;
+  }
+
+  .honey-nav-link:hover {
+    background: oklch(0.91 0.1 82);
+  }
+
+  .honey-hero,
+  .honey-empty,
+  .honey-card {
+    border: 3px solid oklch(0.84 0.08 78);
+    background: oklch(1 0 0 / 0.86);
+    border-radius: 2rem;
+    box-shadow:
+      0 5px 0 oklch(0.66 0.09 65 / 0.55),
+      0 22px 55px oklch(0.42 0.08 55 / 0.13);
+    backdrop-filter: blur(14px);
+  }
+
+  .honey-hover {
+    transition:
+      transform 160ms ease,
+      box-shadow 160ms ease,
+      border-color 160ms ease;
+  }
+
+  .honey-hover:hover {
+    transform: translateY(-4px) rotate(-0.35deg);
+    border-color: oklch(0.75 0.14 72);
+    box-shadow:
+      0 7px 0 oklch(0.66 0.09 65 / 0.65),
+      0 30px 75px oklch(0.42 0.08 55 / 0.18);
+  }
+
+  .honey-blob {
+    border-radius: 999px;
+    filter: blur(2px);
+  }
+
+  .honey-blob-pink {
+    background: oklch(0.9 0.09 25 / 0.55);
+  }
+
+  .honey-blob-yellow {
+    background: oklch(0.92 0.12 88 / 0.65);
+  }
+
+  .honey-icon,
+  .honey-image-placeholder {
+    border-radius: 1.5rem;
+    background:
+      radial-gradient(circle at 35% 30%, oklch(0.96 0.1 90), transparent 45%),
+      oklch(0.91 0.08 82);
+    color: oklch(0.48 0.08 58);
+  }
+
+  .honey-button {
+    border-radius: 999px;
+    background: oklch(0.78 0.16 78);
+    color: oklch(0.24 0.06 55);
+    font-weight: 900;
+    box-shadow:
+      0 4px 0 oklch(0.58 0.1 58 / 0.55),
+      0 14px 30px oklch(0.72 0.13 70 / 0.26);
+    transition:
+      transform 150ms ease,
+      box-shadow 150ms ease,
+      background 150ms ease;
+  }
+
+  .honey-button:hover {
+    background: oklch(0.82 0.17 82);
+    transform: translateY(-2px);
+    box-shadow:
+      0 6px 0 oklch(0.58 0.1 58 / 0.55),
+      0 20px 40px oklch(0.72 0.13 70 / 0.32);
+  }
+
+  .honey-button:active {
+    transform: translateY(1px);
+    box-shadow:
+      0 2px 0 oklch(0.58 0.1 58 / 0.55),
+      0 9px 20px oklch(0.72 0.13 70 / 0.22);
+  }
+
+  .honey-outline-button {
+    border-radius: 999px;
+    border: 2px solid oklch(0.82 0.09 78);
+    background: oklch(1 0 0 / 0.75);
+    color: oklch(0.32 0.07 55);
+    font-weight: 900;
+  }
+
+  .honey-outline-button:hover {
+    background: oklch(0.96 0.08 88);
+  }
+
+  .honey-danger-button {
+    border-radius: 999px;
+    font-weight: 900;
+  }
+
+  .honey-input {
+    height: 2.85rem;
+    border-radius: 1.25rem;
+    border: 2px solid oklch(0.84 0.07 78);
+    background: oklch(1 0 0 / 0.9);
+    color: oklch(0.28 0.07 55);
+    font-weight: 800;
+  }
+
+  .honey-input:focus-visible {
+    border-color: oklch(0.74 0.14 72);
+    box-shadow: 0 0 0 4px oklch(0.88 0.1 82 / 0.45);
+  }
+
+  .honey-dialog {
+    border-radius: 2rem;
+    border: 3px solid oklch(0.84 0.08 78);
+    background: oklch(1 0 0 / 0.97);
+    box-shadow:
+      0 6px 0 oklch(0.66 0.09 65 / 0.65),
+      0 32px 100px oklch(0.42 0.08 55 / 0.2);
+  }
+}
