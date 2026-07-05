@@ -15,13 +15,12 @@ export async function getEventsByCreatorId(creatorId: string) {
 }
 
 export async function createEvent(creatorId: string, input: EventInput) {
-    const slug = createEventSlug(input.name, input.honoreeName);
+    const slug = createEventSlug(input.name);
 
     return prisma.event.create({
         data: {
             type: input.type,
             name: input.name,
-            honoreeName: input.honoreeName,
             date: new Date(input.date),
             location: input.location,
             description: input.description || null,
