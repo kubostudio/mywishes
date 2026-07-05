@@ -41,6 +41,7 @@ model Event {
   id            String    @id @default(cuid())
   type          EventType
   name          String
+  honoreeName   String
   date          DateTime
   location      String
   description   String?
