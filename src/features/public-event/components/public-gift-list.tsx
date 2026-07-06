@@ -18,6 +18,9 @@ type PublicGift = {
     priceNumber: number | null;
     currency: string;
     description: string | null;
+    color: string | null;
+    size: string | null;
+    dimensions: string | null;
     originalUrl: string | null;
     status: "AVAILABLE" | "PURCHASED";
     quantity: number;
@@ -177,6 +180,26 @@ export function PublicGiftList({ eventSlug, gifts }: PublicGiftListProps) {
                                         {gift.description}
                                     </p>
                                 ) : null}
+                               
+                                <div className="mt-4 flex flex-wrap gap-2">
+                                    {gift.color ? (
+                                        <span className="rounded-full bg-[#FFF1B8] px-3 py-1 text-xs font-black text-[#5A371C]">
+                                            Color: {gift.color}
+                                        </span>
+                                    ) : null}
+
+                                    {gift.size ? (
+                                        <span className="rounded-full bg-[#FFF1B8] px-3 py-1 text-xs font-black text-[#5A371C]">
+                                            Talla: {gift.size}
+                                        </span>
+                                    ) : null}
+
+                                    {gift.dimensions ? (
+                                        <span className="rounded-full bg-[#FFF1B8] px-3 py-1 text-xs font-black text-[#5A371C]">
+                                            Medidas: {gift.dimensions}
+                                        </span>
+                                    ) : null}
+                                </div>
                             </div>
 
                             <div className="grid gap-3 border-t-2 border-[#F1D7A5] bg-[#FFF8E7] p-5">
