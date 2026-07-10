@@ -44,6 +44,7 @@ model Event {
   honoreeName   String
   date          DateTime
   location      String
+  locationURL   String    @default("")
   description   String?
   coverImageUrl String?
   slug          String    @unique

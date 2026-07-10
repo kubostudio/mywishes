@@ -24,6 +24,7 @@ export async function createEvent(creatorId: string, input: EventInput) {
             honoreeName: input.honoreeName,
             date: new Date(input.date),
             location: input.location,
+            locationURL: input.locationURL,
             description: input.description || null,
             slug,
             creatorId,
@@ -81,6 +82,7 @@ export async function updateEvent(
             honoreeName: input.honoreeName,
             date: new Date(input.date),
             location: input.location,
+            locationURL: input.locationURL,
             description: input.description || null,
         },
     });

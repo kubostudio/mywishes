@@ -163,6 +163,20 @@ export function CreateEventDialog() {
                             )}
                         />
 
+                        <FormField
+                            control={form.control}
+                            name="locationURL"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Ubicación en el mapa</FormLabel>
+                                    <FormControl>
+                                        <Input className="h-12 rounded-full border-2 border-[#E8C78A] bg-[#FFF8E7] px-5 font-bold text-[#4A2D16]" placeholder="https://www.google.com/maps..." {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
                         <Button
                             type="submit"
                             className="h-12 w-full rounded-full bg-[#F8C63D] text-sm font-black text-[#3E260E] shadow-[0_5px_0_#B97A22] hover:bg-[#FFD85F]"

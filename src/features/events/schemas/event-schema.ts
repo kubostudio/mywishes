@@ -14,6 +14,7 @@ export const eventSchema = z.object({
     honoreeName: z.string().min(2, "Ingresa el nombre del homenajeado."),
     date: z.string().min(1, "Selecciona una fecha."),
     location: z.string().min(2, "Ingresa el lugar del evento."),
+    locationURL: z.string().min(2, "Ingresa la ubicación en el mapa"),
     description: z.string().optional(),
 });
 

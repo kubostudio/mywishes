@@ -6,9 +6,11 @@ import { EVENT_TYPE_LABELS } from "@/features/events/lib/event-labels";
 import { getPublicEventBySlug } from "@/features/public-event/services/public-event-service";
 import { PublicGiftList } from "@/features/public-event/components/public-gift-list";
 import type { Metadata } from "next";
+import Link from "next/link";
 import { CountdownLabel } from "@/features/public-event/components/countdown-label";
 import { ForestDecor } from "@/components/storybook/story-decor";
 import { PendingPurchasePrompt } from "@/features/public-event/components/pending-purchase-prompt";
+import next from "next";
 
 type PublicEventPageProps = {
     params: Promise<{
@@ -101,7 +103,17 @@ export default async function PublicEventPage({ params }: PublicEventPageProps) 
                                     <p className="text-lg font-black text-[#3B2412]">
                                         {event.location}
                                     </p>
+                                    <p className="">
+                                    </p>
                                 </div>
+                                <Link
+                                    href={event.locationURL}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-xs font-extrabold uppercase tracking-wide text-[#A47A42]"
+                                >
+                                    Ver en mapa
+                                </Link>
                             </div>
                         </div>
                     </div>

@@ -121,7 +121,7 @@ export function EditEventDialog({ event }: EditEventDialogProps) {
                                 <FormItem>
                                     <FormLabel>Nombre del evento</FormLabel>
                                     <FormControl>
-                                        <Input className="honey-input" placeholder="Baby Shower de Mateo" {...field} />
+                                        <Input className="h-12 rounded-full border-2 border-[#E8C78A] bg-[#FFF8E7] px-5 font-bold text-[#4A2D16]" placeholder="Baby Shower de Mateo" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -135,7 +135,7 @@ export function EditEventDialog({ event }: EditEventDialogProps) {
                                 <FormItem>
                                     <FormLabel>Homenajeado</FormLabel>
                                     <FormControl>
-                                        <Input className="honey-input" placeholder="Mateo" {...field} />
+                                        <Input className="h-12 rounded-full border-2 border-[#E8C78A] bg-[#FFF8E7] px-5 font-bold text-[#4A2D16]" placeholder="Mateo" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -149,7 +149,7 @@ export function EditEventDialog({ event }: EditEventDialogProps) {
                                 <FormItem>
                                     <FormLabel>Fecha</FormLabel>
                                     <FormControl>
-                                        <Input className="honey-input" type="date" {...field} />
+                                        <Input className="h-12 rounded-full border-2 border-[#E8C78A] bg-[#FFF8E7] px-5 font-bold text-[#4A2D16]" type="date" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -163,7 +163,21 @@ export function EditEventDialog({ event }: EditEventDialogProps) {
                                 <FormItem>
                                     <FormLabel>Lugar</FormLabel>
                                     <FormControl>
-                                        <Input className="honey-input" placeholder="Casa, salón, restaurante..." {...field} />
+                                        <Input className="h-12 rounded-full border-2 border-[#E8C78A] bg-[#FFF8E7] px-5 font-bold text-[#4A2D16]" placeholder="Casa, salón, restaurante..." {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
+                        <FormField
+                            control={form.control}
+                            name="locationURL"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Ubicación en el mapa</FormLabel>
+                                    <FormControl>
+                                        <Input className="h-12 rounded-full border-2 border-[#E8C78A] bg-[#FFF8E7] px-5 font-bold text-[#4A2D16]" placeholder="https://www.google.com/maps..." {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
