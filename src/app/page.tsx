@@ -26,7 +26,7 @@ export default function HomePage() {
       <div className="relative z-10">
         <header className="mx-auto flex h-20 max-w-6xl items-center justify-between px-4">
           <Link href="/" className="flex items-center gap-3">
-            <div className="flex items-center justify-center relative h-[44px] w-[px] overflow-visible">
+            <div className="flex items-center justify-center relative h-[48px] w-[48px] overflow-visible">
               <Image
                 src="/logo2.svg"
                 alt="MyWishes"
