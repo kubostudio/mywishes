@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Gift, Sparkles } from "lucide-react";
 
 import { LogoutButton } from "@/features/auth/components/logout-button";
@@ -21,8 +22,15 @@ export default function DashboardLayout({
             <header className="sticky top-0 z-40 border-b-2 border-[#F1D7A5] bg-[#FFF8E8]/85 backdrop-blur-xl">
                 <div className="mx-auto flex h-20 max-w-6xl items-center justify-between px-4">
                     <Link href="/dashboard" className="flex items-center gap-3">
-                        <div className="flex size-12 items-center justify-center rounded-[1.35rem] bg-[#F4B42A] text-[#3B2412] shadow-[0_5px_0_#B9771F]">
-                            <Gift className="size-6" />
+                        <div className="flex items-center justify-center relative h-[48px] w-[48px] overflow-visible">
+                            <Image
+                                src="/logo2.svg"
+                                alt="MyWishes"
+                                width={220}
+                                height={220}
+                                className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+                                priority
+                            />
                         </div>
 
                         <div>
