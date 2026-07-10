@@ -11,8 +11,30 @@ const fontSans = Quicksand({
 });
 
 export const metadata: Metadata = {
-  title: "MyWishes",
-  description: "Lista de regalos para un evento especial.",
+  metadataBase: new URL("https://mywishes.space"),
+
+  title: {
+    default: "MyWishes | Crea y comparte listas de regalos",
+    template: "%s | MyWishes",
+  },
+
+  description:
+    "Crea listas de regalos para cumpleaños, Navidad, matrimonios y baby showers. Comparte un enlace con familiares y amigos y evita regalos repetidos.",
+
+  keywords: [
+    "lista de regalos",
+    "lista de deseos",
+    "crear lista de regalos",
+    "lista de regalos online",
+    "lista de cumpleaños",
+    "lista para baby shower",
+    "lista de matrimonio",
+    "lista de navidad",
+  ],
+
+  icons: {
+    icon: "/icon.svg",
+  },
 };
 
 export default function RootLayout({

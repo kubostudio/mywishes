@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import {
   CalendarHeart,
   Gift,
@@ -6,22 +7,34 @@ import {
   ListChecks,
   PartyPopper,
   Share2,
-  Sparkles,
+  Sparkles, 
+  TabletSmartphone,
 } from "lucide-react";
 
 import { StoryBadge } from "@/components/storybook/story-badge";
 import { StoryCard } from "@/components/storybook/story-card";
 import { StoryLinkButton } from "@/components/storybook/story-button";
+import { Faqs } from "@/components/landing/Faqs";
+import { HowItWorks } from "@/components/landing/HowItWorks";
+
 
 export default function HomePage() {
   return (
+    <>
     <main className="relative min-h-screen overflow-hidden bg-[linear-gradient(180deg,#FFF8E8,#FFEFC4)]">
 
       <div className="relative z-10">
         <header className="mx-auto flex h-20 max-w-6xl items-center justify-between px-4">
           <Link href="/" className="flex items-center gap-3">
-            <div className="flex size-12 items-center justify-center rounded-[1.35rem] bg-[#F8C63D] text-[#3E260E] shadow-[0_5px_0_#B97A22]">
-              <Gift className="size-6" />
+            <div className="flex items-center justify-center relative h-[44px] w-[px] overflow-visible">
+              <Image
+                src="/logo2.svg"
+                alt="MyWishes"
+                width={220}
+                height={220}
+                className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+                priority
+              />
             </div>
 
             <div>
@@ -54,17 +67,16 @@ export default function HomePage() {
             </StoryBadge>
 
             <h1 className="mt-6 max-w-3xl text-5xl font-bold leading-[0.95] tracking-tight text-[#3E260E] md:text-7xl">
-              Crea una lista de regalos linda, simple y fácil de compartir.
+              La forma más fácil de crear y compartir tu lista de regalos.
             </h1>
 
             <p className="mt-6 max-w-2xl text-xl font-bold leading-8 text-[#7A4E28]">
-              Agrega regalos de cualquier tienda, comparte tu enlace con tus
-              invitados y evita regalos duplicados de forma sencilla.
+              Crea listas de regalos para cumpleaños, Navidad, matrimonios, baby showers o cualquier ocasión especial. Compártelas con un solo enlace.
             </p>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <StoryLinkButton href="/register" className="h-14 px-8 text-base">
-                Crear mi lista
+                Crear mi lista gratis
               </StoryLinkButton>
 
               <StoryLinkButton
@@ -117,42 +129,6 @@ export default function HomePage() {
         </section>
 
         <section className="mx-auto max-w-6xl px-4 py-10">
-          <div className="grid gap-5 md:grid-cols-3">
-            {[
-              {
-                icon: CalendarHeart,
-                title: "Crea tu evento",
-                text: "Configura la fecha, lugar y detalles principales de tu celebración.",
-              },
-              {
-                icon: ListChecks,
-                title: "Agrega regalos",
-                text: "Incluye regalos manualmente o pegando enlaces de tiendas online.",
-              },
-              {
-                icon: Share2,
-                title: "Comparte tu lista",
-                text: "Envía el enlace o QR para que tus invitados elijan sin registrarse.",
-              },
-            ].map((item) => (
-              <StoryCard key={item.title} className="p-6">
-                <div className="mb-5 flex size-14 items-center justify-center rounded-2xl bg-[#FFF1B8]">
-                  <item.icon className="size-7 text-[#B97A22]" />
-                </div>
-
-                <h3 className="text-2xl font-bold text-[#3E260E]">
-                  {item.title}
-                </h3>
-
-                <p className="mt-3 text-base font-semibold leading-7 text-[#7A4E28]">
-                  {item.text}
-                </p>
-              </StoryCard>
-            ))}
-          </div>
-        </section>
-
-        <section className="mx-auto max-w-6xl px-4 py-10">
           <StoryCard className="grid gap-8 p-8 md:grid-cols-[0.9fr_1.1fr] md:p-10">
             <div>
               <StoryBadge>
@@ -175,7 +151,7 @@ export default function HomePage() {
                 "Sin registro para invitados",
                 "Evita regalos repetidos",
                 "Compatible con cualquier tienda",
-                "Ideal para compartir por WhatsApp",
+                "Ideal para compartir por redes sociales",
               ].map((item) => (
                 <div
                   key={item}
@@ -208,6 +184,55 @@ export default function HomePage() {
           </div>
         </section>
       </div>
+
+      <HowItWorks />
+
+      <Faqs />
     </main>
+
+    <footer className="bg-[#5F4B32] px-6 py-14 text-[#FFEFC4]">
+      <div className="mx-auto grid max-w-6xl gap-10 md:grid-cols-[1.5fr_1fr_1fr_1fr]">
+        <div>
+          <h2 className="text-2xl font-extrabold">MyWishes</h2>
+          <p className="mt-4 max-w-sm leading-7 text-[#F6E3B8]">
+            Crea, organiza y comparte listas de regalos para baby showers,
+            cumpleaños y momentos especiales.
+          </p>
+        </div>
+
+        <div>
+          <h3 className="font-bold text-white">Producto</h3>
+          <ul className="mt-4 space-y-3 text-[#F6E3B8]">
+            <li><Link href="/login">Crear lista</Link></li>
+            <li><Link href="#como-funciona">Cómo funciona</Link></li>
+            <li><Link href="#faq">Preguntas frecuentes</Link></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 className="font-bold text-white">Ocasiones</h3>
+          <ul className="mt-4 space-y-3 text-[#F6E3B8]">
+            <li>Baby shower</li>
+            <li>Cumpleaños</li>
+            <li>Matrimonios</li>
+            <li>Navidad</li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 className="font-bold text-white">Legal</h3>
+          <ul className="mt-4 space-y-3 text-[#F6E3B8]">
+            <li><Link href="/privacidad">Privacidad</Link></li>
+            <li><Link href="/terminos">Términos</Link></li>
+            <li><Link href="/contacto">Contacto</Link></li>
+          </ul>
+        </div>
+      </div>
+
+      <div className="mx-auto mt-12 max-w-6xl border-t border-[#7A6548] pt-6 text-sm text-[#F6E3B8]">
+        © 2026 MyWishes. Todos los derechos reservados.
+      </div>
+    </footer>
+    </>
   );
 }
