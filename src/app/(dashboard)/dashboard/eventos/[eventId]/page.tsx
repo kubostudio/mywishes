@@ -252,6 +252,7 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
                                 honoreeName: event.honoreeName,
                                 date: event.date.toISOString().slice(0, 10),
                                 location: event.location,
+                                locationURL:event.locationURL,
                                 description: event.description ?? "",
                             }}
                         />
