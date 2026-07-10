@@ -49,6 +49,7 @@ export function EditEventDialog({ event }: EditEventDialogProps) {
             honoreeName: event.honoreeName,
             date: event.date,
             location: event.location,
+            locationURL: event.locationURL,
             description: event.description ?? "",
         },
     });
