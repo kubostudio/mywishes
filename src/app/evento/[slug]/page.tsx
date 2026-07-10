@@ -110,7 +110,7 @@ export default async function PublicEventPage({ params }: PublicEventPageProps) 
                                     href={event.locationURL}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="text-xs font-extrabold uppercase tracking-wide text-[#A47A42]"
+                                    className="text-xs font-extrabold uppercase tracking-wide text-[#A47A42] bg-[#FFF0C2] py-2 px-4 rounded-lg text-center border border-[#A47A42]"
                                 >
                                     Ver en mapa
                                 </Link>
