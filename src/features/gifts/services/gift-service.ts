@@ -199,18 +199,36 @@ export async function reorderGifts(
         throw new Error("Evento no encontrado.");
     }
 
-    await prisma.$transaction(
-        giftIds.map((giftId, index) =>
-            prisma.gift.updateMany({
-                where: {
-                    id: giftId,
-                    eventId,
-                    deletedAt: null,
-                },
-                data: {
-                    position: index,
-                },
-            })
-        )
-    );
+    return prisma.$transaction(async (tx) => {
+        const gifts = await tx.gift.findMany({
+            where: {
+                eventId,
+                deletedAt: null,
+            },
+            select: {
+                id: true,
+            },
+        });
+
+        const validGiftIds = new Set(gifts.map((gift) => gift.id));
+
+        const hasInvalidGift = giftIds.some((giftId) => !validGiftIds.has(giftId));
+
+        if (hasInvalidGift) {
+            throw new Error("Hay regalos inválidos en el orden.");
+        }
+
+        await Promise.all(
+            giftIds.map((giftId, index) =>
+                tx.gift.update({
+                    where: {
+                        id: giftId,
+                    },
+                    data: {
+                        position: index,
+                    },
+                })
+            )
+        );
+    });
 }

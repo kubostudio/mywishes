@@ -25,7 +25,9 @@ export async function reorderGiftsAction(
             success: true,
             message: "Orden actualizado.",
         };
-    } catch {
+    } catch (error) {
+        console.error("reorderGiftsAction error:", error);
+
         return {
             success: false,
             message: "No se pudo actualizar el orden.",
