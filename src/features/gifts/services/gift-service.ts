@@ -199,36 +199,22 @@ export async function reorderGifts(
         throw new Error("Evento no encontrado.");
     }
 
-    return prisma.$transaction(async (tx) => {
-        const gifts = await tx.gift.findMany({
-            where: {
-                eventId,
-                deletedAt: null,
-            },
-            select: {
-                id: true,
-            },
-        });
+    if (!giftIds.length) {
+        throw new Error("No llegaron regalos para ordenar.");
+    }
 
-        const validGiftIds = new Set(gifts.map((gift) => gift.id));
+    const values = Prisma.join(
+        giftIds.map((giftId, index) => Prisma.sql`(${giftId}, ${index})`)
+    );
 
-        const hasInvalidGift = giftIds.some((giftId) => !validGiftIds.has(giftId));
-
-        if (hasInvalidGift) {
-            throw new Error("Hay regalos inválidos en el orden.");
-        }
-
-        await Promise.all(
-            giftIds.map((giftId, index) =>
-                tx.gift.update({
-                    where: {
-                        id: giftId,
-                    },
-                    data: {
-                        position: index,
-                    },
-                })
-            )
-        );
-    });
+    await prisma.$executeRaw`
+    UPDATE "Gift" AS g
+    SET "position" = v.position
+    FROM (
+      VALUES ${values}
+    ) AS v(id, position)
+    WHERE g.id = v.id
+      AND g."eventId" = ${eventId}
+      AND g."deletedAt" IS NULL
+  `;
 }
