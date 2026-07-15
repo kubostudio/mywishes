@@ -204,7 +204,9 @@ export async function reorderGifts(
     }
 
     const values = Prisma.join(
-        giftIds.map((giftId, index) => Prisma.sql`(${giftId}, ${index})`)
+        giftIds.map((giftId, index) =>
+            Prisma.sql`(${giftId}::text, ${index}::int)`
+        )
     );
 
     await prisma.$executeRaw`
