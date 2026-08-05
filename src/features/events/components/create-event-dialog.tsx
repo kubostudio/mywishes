@@ -72,7 +72,7 @@ export function CreateEventDialog() {
                 </button>
             </DialogTrigger>
 
-            <DialogContent className="rounded-[2rem] border-2 border-[#E8C78A] bg-[#FFFDF7] p-6 shadow-[0_24px_70px_rgba(101,67,33,0.22)]">
+            <DialogContent className="rounded-[2rem] border-2 border-[#E8C78A] bg-[#FFFDF7] p-6 shadow-[0_24px_70px_rgba(101,67,33,0.22)]" onOpenAutoFocus={(e) => { e.preventDefault(); }}>
                 <DialogHeader>
                     <DialogTitle>Crear evento</DialogTitle>
                     <DialogDescription>
@@ -90,7 +90,7 @@ export function CreateEventDialog() {
                                     <FormLabel>Tipo de evento</FormLabel>
                                     <FormControl>
                                         <select
-                                            className="h-12 w-full rounded-full border-2 border-[#E8C78A] bg-[#FFF8E7] px-5 text-sm font-bold text-[#4A2D16]"
+                                            className="h-12 w-full appearance-none rounded-full border-2 border-[#E8C78A] bg-[#FFF8E7] px-5 text-sm font-bold text-[#4A2D16]"
                                             {...field}
                                         >
                                             <option value="BABY_SHOWER">Baby Shower</option>

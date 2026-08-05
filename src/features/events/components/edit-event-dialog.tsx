@@ -80,7 +80,7 @@ export function EditEventDialog({ event }: EditEventDialogProps) {
                 </button>
             </DialogTrigger>
 
-            <DialogContent className="rounded-[2rem] border-2 border-[#E8C78A] bg-[#FFFDF7] p-6 shadow-[0_24px_70px_rgba(101,67,33,0.22)]">
+            <DialogContent className="rounded-[2rem] border-2 border-[#E8C78A] bg-[#FFFDF7] p-6 shadow-[0_24px_70px_rgba(101,67,33,0.22)]" onOpenAutoFocus={(e) => { e.preventDefault(); }}>
                 <DialogHeader>
                     <DialogTitle>Editar evento</DialogTitle>
                     <DialogDescription>
@@ -98,7 +98,7 @@ export function EditEventDialog({ event }: EditEventDialogProps) {
                                     <FormLabel>Tipo de evento</FormLabel>
                                     <FormControl>
                                         <select
-                                            className="w-full rounded-md border bg-background px-3 py-2 text-sm"
+                                            className="w-full appearance-none rounded-md border bg-background px-3 py-2 text-sm"
                                             {...field}
                                         >
                                             <option value="BABY_SHOWER">Baby Shower</option>
