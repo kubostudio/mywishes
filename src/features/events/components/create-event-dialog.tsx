@@ -90,7 +90,7 @@ export function CreateEventDialog() {
                                     <FormLabel>Tipo de evento</FormLabel>
                                     <FormControl>
                                         <select
-                                            className="h-12 w-full appearance-none rounded-full border-2 border-[#E8C78A] bg-[#FFF8E7] px-5 text-sm font-bold text-[#4A2D16]"
+                                            className="h-12 w-full rounded-full border-2 border-[#E8C78A] bg-[#FFF8E7] px-5 text-sm font-bold text-[#4A2D16]"
                                             {...field}
                                         >
                                             <option value="BABY_SHOWER">Baby Shower</option>
@@ -142,7 +142,7 @@ export function CreateEventDialog() {
                                 <FormItem>
                                     <FormLabel>Fecha</FormLabel>
                                     <FormControl>
-                                        <Input className="h-12 rounded-full border-2 border-[#E8C78A] bg-[#FFF8E7] px-5 font-bold text-[#4A2D16]" type="date" {...field} />
+                                        <Input className="h-12 rounded-full appearance-none border-2 border-[#E8C78A] bg-[#FFF8E7] px-5 font-bold text-[#4A2D16]" type="date" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>

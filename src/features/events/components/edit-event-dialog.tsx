@@ -98,7 +98,7 @@ export function EditEventDialog({ event }: EditEventDialogProps) {
                                     <FormLabel>Tipo de evento</FormLabel>
                                     <FormControl>
                                         <select
-                                            className="w-full appearance-none rounded-md border bg-background px-3 py-2 text-sm"
+                                            className="w-full rounded-md border bg-background px-3 py-2 text-sm"
                                             {...field}
                                         >
                                             <option value="BABY_SHOWER">Baby Shower</option>
@@ -150,7 +150,7 @@ export function EditEventDialog({ event }: EditEventDialogProps) {
                                 <FormItem>
                                     <FormLabel>Fecha</FormLabel>
                                     <FormControl>
-                                        <Input className="h-12 rounded-full border-2 border-[#E8C78A] bg-[#FFF8E7] px-5 font-bold text-[#4A2D16]" type="date" {...field} />
+                                        <Input className="h-12 rounded-full appearance-none border-2 border-[#E8C78A] bg-[#FFF8E7] px-5 font-bold text-[#4A2D16]" type="date" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
