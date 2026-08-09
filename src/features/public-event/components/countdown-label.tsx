@@ -1,23 +1,23 @@
 type CountdownLabelProps = {
-    date: string;
+    date: Date;
 };
 
 export function CountdownLabel({ date }: CountdownLabelProps) {
-
     const today = new Date();
 
-    // Supabase: "2026-08-09 00:00:00"
-    const dateOnly = date.split(" ")[0]; // "2026-08-09"
-    const [year, month, day] = dateOnly.split("-").map(Number);
-
-    // Crear la fecha explícitamente en hora local
-    const eventDate = new Date(year, month - 1, day);
+    const eventDate = new Date(
+        date.getUTCFullYear(),
+        date.getUTCMonth(),
+        date.getUTCDate()
+    );
 
     today.setHours(0, 0, 0, 0);
     eventDate.setHours(0, 0, 0, 0);
 
     const diffMs = eventDate.getTime() - today.getTime();
-    const diffDays = Math.round(diffMs / (1000 * 60 * 60 * 24));
+    const diffDays = Math.round(
+        diffMs / (1000 * 60 * 60 * 24)
+    );
 
     if (diffDays > 1) {
         return <span>Faltan {diffDays} días</span>;
