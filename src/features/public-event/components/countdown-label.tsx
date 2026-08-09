@@ -3,20 +3,35 @@ type CountdownLabelProps = {
 };
 
 export function CountdownLabel({ date }: CountdownLabelProps) {
-    const today = new Date();
+    const now = new Date();
 
-    const eventDate = new Date(
-        date.getUTCFullYear(),
-        date.getUTCMonth(),
-        date.getUTCDate()
+    const todayPeru = new Intl.DateTimeFormat("en-CA", {
+        timeZone: "America/Lima",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+    }).format(now);
+
+    const [todayYear, todayMonth, todayDay] = todayPeru.split("-").map(Number);
+
+    const eventYear = date.getUTCFullYear();
+    const eventMonth = date.getUTCMonth();
+    const eventDay = date.getUTCDate();
+
+    const todayUtc = Date.UTC(
+        todayYear,
+        todayMonth - 1,
+        todayDay
     );
 
-    today.setHours(0, 0, 0, 0);
-    eventDate.setHours(0, 0, 0, 0);
+    const eventUtc = Date.UTC(
+        eventYear,
+        eventMonth,
+        eventDay
+    );
 
-    const diffMs = eventDate.getTime() - today.getTime();
     const diffDays = Math.round(
-        diffMs / (1000 * 60 * 60 * 24)
+        (eventUtc - todayUtc) / 86_400_000
     );
 
     if (diffDays > 1) {

@@ -83,8 +83,10 @@ export default async function PublicEventPage({ params }: PublicEventPageProps) 
                                         Fecha
                                     </p>
                                     <p className="text-lg font-black text-[#3B2412]">
-                                        {event.date.toLocaleDateString("es-PE")} ·{" "}
-                                        <CountdownLabel date={event.date} />
+                                        {event.date.toLocaleDateString("es-PE", {
+                                            timeZone: "UTC",
+                                        })}{" "}
+                                        · <CountdownLabel date={event.date} />
                                     </p>
                                 </div>
                             </div>

@@ -60,14 +60,31 @@ function giftToViewModel(gift: {
 }
 
 function getDaysUntil(date: Date) {
-    const today = new Date();
-    const eventDate = new Date(date);
+    const now = new Date();
 
-    today.setHours(0, 0, 0, 0);
-    eventDate.setHours(0, 0, 0, 0);
+    const peruToday = new Intl.DateTimeFormat("en-CA", {
+        timeZone: "America/Lima",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+    }).format(now);
 
-    return Math.ceil(
-        (eventDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)
+    const [year, month, day] = peruToday.split("-").map(Number);
+
+    const todayUTC = Date.UTC(
+        year,
+        month - 1,
+        day
+    );
+
+    const eventUTC = Date.UTC(
+        date.getUTCFullYear(),
+        date.getUTCMonth(),
+        date.getUTCDate()
+    );
+
+    return Math.round(
+        (eventUTC - todayUTC) / 86_400_000
     );
 }
 
@@ -85,6 +102,7 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
     const availableGifts = gifts.filter((gift) => gift.status === "AVAILABLE");
     const purchasedGifts = gifts.filter((gift) => gift.status === "PURCHASED");
     const daysUntilEvent = getDaysUntil(event.date);
+    console.log(event.date)
 
     return (
         <div className="relative space-y-8 overflow-hidden">
@@ -128,8 +146,11 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
                                         <p className="text-xs font-bold uppercase tracking-wide text-[#A47A42]">
                                             Fecha
                                         </p>
+
                                         <p className="text-lg font-bold text-[#3E260E]">
-                                            {event.date.toLocaleDateString("es-PE")}
+                                            {event.date.toLocaleDateString("es-PE", {
+                                                timeZone: "UTC",
+                                            })}
                                         </p>
                                     </div>
                                 </div>
@@ -191,15 +212,17 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
                             </p>
 
                             <p className="mt-1 text-6xl font-black leading-none text-[#3E260E]">
-                                {daysUntilEvent > 0 ? daysUntilEvent : 0}
+                                {Math.max(daysUntilEvent, 0)}
                             </p>
 
                             <p className="mt-1 text-lg font-black text-[#7A4E28]">
-                                {daysUntilEvent === 1
-                                    ? "día para celebrar"
-                                    : daysUntilEvent <= 0
-                                        ? "¡es hoy!"
-                                        : "días para celebrar"}
+                                {daysUntilEvent > 1
+                                    ? "días para celebrar"
+                                    : daysUntilEvent === 1
+                                        ? "día para celebrar"
+                                        : daysUntilEvent === 0
+                                            ? "¡es hoy!"
+                                            : "evento finalizado"}
                             </p>
                         </div>
                     </div>
