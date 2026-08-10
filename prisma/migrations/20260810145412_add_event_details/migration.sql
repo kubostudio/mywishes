@@ -1,0 +1,22 @@
+/*
+  Warnings:
+
+  - The values [GRADUATION] on the enum `EventType` will be removed. If these variants are still used in the database, this will fail.
+
+*/
+-- CreateEnum
+CREATE TYPE "Gender" AS ENUM ('MALE', 'FEMALE');
+
+-- AlterEnum
+BEGIN;
+CREATE TYPE "EventType_new" AS ENUM ('BABY_SHOWER', 'BIRTHDAY', 'WEDDING', 'BAPTISM', 'GENDER_REVEAL', 'CHRISTMAS', 'OTHER');
+ALTER TABLE "Event" ALTER COLUMN "type" TYPE "EventType_new" USING ("type"::text::"EventType_new");
+ALTER TYPE "EventType" RENAME TO "EventType_old";
+ALTER TYPE "EventType_new" RENAME TO "EventType";
+DROP TYPE "public"."EventType_old";
+COMMIT;
+
+-- AlterTable
+ALTER TABLE "Event" ADD COLUMN     "birthdayAge" INTEGER,
+ADD COLUMN     "dressCode" TEXT,
+ADD COLUMN     "gender" "Gender";

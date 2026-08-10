@@ -21,11 +21,36 @@ export async function createEvent(creatorId: string, input: EventInput) {
         data: {
             type: input.type,
             name: input.name,
-            honoreeName: input.honoreeName,
+
+            honoreeName:
+                input.type === "GENDER_REVEAL"
+                    ? null
+                    : input.honoreeName,
+
+            gender:
+                input.type === "GENDER_REVEAL"
+                    ? null
+                    : input.gender,
+
+            birthdayAge:
+                input.type === "BIRTHDAY"
+                    ? input.birthdayAge
+                    : null,
+
+            dressCode: input.dressCode || null,
+
             date: new Date(input.date),
+
+            endDate: input.endDate
+                ? new Date(input.endDate)
+                : null,
+
+            timezone: input.timezone,
+
             location: input.location,
             locationURL: input.locationURL,
             description: input.description || null,
+
             slug,
             creatorId,
         },
@@ -79,8 +104,30 @@ export async function updateEvent(
         data: {
             type: input.type,
             name: input.name,
-            honoreeName: input.honoreeName,
+
+            honoreeName:
+                input.type === "GENDER_REVEAL"
+                    ? null
+                    : input.honoreeName,
+
+            gender:
+                input.type === "GENDER_REVEAL"
+                    ? null
+                    : input.gender,
+
+            birthdayAge:
+                input.type === "BIRTHDAY"
+                    ? input.birthdayAge
+                    : null,
+
+            dressCode: input.dressCode || null,
+
             date: new Date(input.date),
+            endDate: input.endDate
+                ? new Date(input.endDate)
+                : null,
+            timezone: input.timezone,
+
             location: input.location,
             locationURL: input.locationURL,
             description: input.description || null,

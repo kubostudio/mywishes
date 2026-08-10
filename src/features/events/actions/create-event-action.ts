@@ -25,7 +25,7 @@ export async function createEventAction(
         if (!parsed.success) {
             return {
                 success: false,
-                message: "Revisa los datos del evento.",
+                message: JSON.stringify(parsed.error.flatten()),
             };
         }
 
@@ -37,10 +37,15 @@ export async function createEventAction(
             success: true,
             message: "Evento creado correctamente.",
         };
-    } catch {
+    } catch (error) {
+        const message =
+            error instanceof Error
+                ? error.message
+                : String(error);
+
         return {
             success: false,
-            message: "Debes iniciar sesión.",
+            message,
         };
     }
 }

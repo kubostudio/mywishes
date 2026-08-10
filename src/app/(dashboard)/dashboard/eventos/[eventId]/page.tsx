@@ -11,8 +11,8 @@ import { DeleteEventButton } from "@/features/events/components/delete-event-but
 import { SortableGiftList } from "@/features/gifts/components/sortable-gift-list";
 import { SortGiftsButtons } from "@/features/gifts/components/sort-gifts-buttons";
 import { ForestDecor } from "@/components/storybook/story-decor";
-import { Gift, Heart, Share2, Settings, Sparkles, CalendarDays, MapPin } from "lucide-react";
-
+import { Gift, Share2, Settings, Sparkles, CalendarDays, MapPin, Cake, Shirt } from "lucide-react";
+import { EventDateTime } from "@/features/events/components/event-date-time";
 import { StoryBadge } from "@/components/storybook/story-badge";
 import { StoryCard } from "@/components/storybook/story-card";
 import { StoryLinkButton } from "@/components/storybook/story-button";
@@ -126,9 +126,15 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
                             {event.name}
                         </h1>
 
-                        <p className="mt-5 max-w-2xl text-xl font-bold leading-8 text-[#7A4E28]">
-                            Una lista de regalos preparada con cariño para {event.honoreeName}.
-                        </p>
+                        {event.type === "GENDER_REVEAL" ? (
+                            <p className="mt-6 max-w-2xl text-xl font-bold leading-8 text-[#7A5631]">
+                                Una lista de regalos para celebrar una gran sorpresa.
+                            </p>
+                        ) : (
+                            <p className="mt-6 max-w-2xl text-xl font-bold leading-8 text-[#7A5631]">
+                                Una lista de regalos preparada con cariño para {event.honoreeName}
+                            </p>
+                        )}
 
                         {event.description ? (
                             <p className="mt-4 max-w-2xl text-base font-semibold leading-7 text-[#8A6332]">
@@ -138,20 +144,21 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
 
                         <div className="mt-8 grid gap-4 sm:grid-cols-2">
                             <div className="rounded-[1.75rem] bg-[#FFF8E7] p-5">
-                                <div className="flex items-center gap-4">
-                                    <div className="flex size-12 items-center justify-center rounded-2xl bg-[#FFE9AA]">
+                                <div className="flex items-start gap-4">
+                                    <div className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-[#FFE9AA]">
                                         <CalendarDays className="size-6 text-[#B97A22]" />
                                     </div>
-                                    <div>
+
+                                    <div className="min-w-0">
                                         <p className="text-xs font-bold uppercase tracking-wide text-[#A47A42]">
-                                            Fecha
+                                            Fecha y hora
                                         </p>
 
-                                        <p className="text-lg font-bold text-[#3E260E]">
-                                            {event.date.toLocaleDateString("es-PE", {
-                                                timeZone: "UTC",
-                                            })}
-                                        </p>
+                                        <EventDateTime
+                                            startsAt={event.date.toISOString()}
+                                            endsAt={event.endDate?.toISOString()}
+                                            eventTimezone={event.timezone ?? undefined}
+                                        />
                                     </div>
                                 </div>
                             </div>
@@ -171,6 +178,46 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
                                     </div>
                                 </div>
                             </div>
+
+                            {event.type === "BIRTHDAY" && event.birthdayAge ? (
+                                <div className="rounded-[1.75rem] bg-[#FFF8E7] p-5">
+                                    <div className="flex items-center gap-4">
+                                        <div className="flex size-12 items-center justify-center rounded-2xl bg-[#FFE9AA]">
+                                            <Cake className="size-6 text-[#B97A22]" />
+                                        </div>
+
+                                        <div>
+                                            <p className="text-xs font-bold uppercase tracking-wide text-[#A47A42]">
+                                                Cumple
+                                            </p>
+
+                                            <p className="text-lg font-bold text-[#3E260E]">
+                                                {event.birthdayAge} años
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            ) : null}
+
+                            {event.dressCode ? (
+                                <div className="rounded-[1.75rem] bg-[#FFF8E7] p-5">
+                                    <div className="flex items-center gap-4">
+                                        <div className="flex size-12 items-center justify-center rounded-2xl bg-[#FFE9AA]">
+                                            <Shirt className="size-6 text-[#B97A22]" />
+                                        </div>
+
+                                        <div>
+                                            <p className="text-xs font-bold uppercase tracking-wide text-[#A47A42]">
+                                                Dress code
+                                            </p>
+
+                                            <p className="text-lg font-bold text-[#3E260E]">
+                                                {event.dressCode}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            ) : null}
                         </div>
                     </div>
 
@@ -272,10 +319,17 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
                                 id: event.id,
                                 type: event.type,
                                 name: event.name,
-                                honoreeName: event.honoreeName,
-                                date: event.date.toISOString().slice(0, 10),
+                                honoreeName: event.honoreeName ?? undefined,
+                                gender: event.gender ?? undefined,
+                                birthdayAge: event.birthdayAge ?? undefined,
+                                dressCode: event.dressCode ?? "",
+
+                                date: event.date.toISOString(),
+                                endDate: event.endDate?.toISOString(),
+                                timezone: event.timezone ?? undefined,
+
                                 location: event.location,
-                                locationURL:event.locationURL,
+                                locationURL: event.locationURL,
                                 description: event.description ?? "",
                             }}
                         />

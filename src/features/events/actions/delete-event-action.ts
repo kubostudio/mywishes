@@ -24,7 +24,9 @@ export async function deleteEventAction(
             success: true,
             message: "Evento eliminado correctamente.",
         };
-    } catch {
+    } catch (error) {
+        console.error("deleteEventAction error:", error);
+
         return {
             success: false,
             message: "No se pudo eliminar el evento.",

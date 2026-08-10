@@ -11,7 +11,7 @@ enum EventType {
   BIRTHDAY
   WEDDING
   BAPTISM
-  GRADUATION
+  GENDER_REVEAL
   CHRISTMAS
   OTHER
 }
@@ -19,6 +19,11 @@ enum EventType {
 enum GiftStatus {
   AVAILABLE
   PURCHASED
+}
+
+enum Gender {
+  MALE
+  FEMALE
 }
 
 model User {
@@ -41,8 +46,15 @@ model Event {
   id            String    @id @default(cuid())
   type          EventType
   name          String
-  honoreeName   String
+  honoreeName   String?
   date          DateTime
+  endDate       DateTime?
+  timezone      String?
+
+  gender        Gender?
+  birthdayAge   Int?
+  dressCode     String?
+
   location      String
   locationURL   String    @default("")
   description   String?

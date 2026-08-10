@@ -1,33 +1,51 @@
 type CountdownLabelProps = {
     date: Date;
+    timezone?: string | null;
 };
 
-export function CountdownLabel({ date }: CountdownLabelProps) {
-    const now = new Date();
-
-    const todayPeru = new Intl.DateTimeFormat("en-CA", {
-        timeZone: "America/Lima",
+function getDateParts(date: Date, timeZone: string) {
+    const parts = new Intl.DateTimeFormat("en-CA", {
+        timeZone,
         year: "numeric",
         month: "2-digit",
         day: "2-digit",
-    }).format(now);
+    }).formatToParts(date);
 
-    const [todayYear, todayMonth, todayDay] = todayPeru.split("-").map(Number);
+    const year = Number(
+        parts.find((part) => part.type === "year")?.value
+    );
 
-    const eventYear = date.getUTCFullYear();
-    const eventMonth = date.getUTCMonth();
-    const eventDay = date.getUTCDate();
+    const month = Number(
+        parts.find((part) => part.type === "month")?.value
+    );
+
+    const day = Number(
+        parts.find((part) => part.type === "day")?.value
+    );
+
+    return { year, month, day };
+}
+
+export function CountdownLabel({
+    date,
+    timezone,
+}: CountdownLabelProps) {
+    const timeZone = timezone ?? "America/Lima";
+    const now = new Date();
+
+    const today = getDateParts(now, timeZone);
+    const eventDay = getDateParts(date, timeZone);
 
     const todayUtc = Date.UTC(
-        todayYear,
-        todayMonth - 1,
-        todayDay
+        today.year,
+        today.month - 1,
+        today.day
     );
 
     const eventUtc = Date.UTC(
-        eventYear,
-        eventMonth,
-        eventDay
+        eventDay.year,
+        eventDay.month - 1,
+        eventDay.day
     );
 
     const diffDays = Math.round(

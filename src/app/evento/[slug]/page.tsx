@@ -1,5 +1,10 @@
 import { notFound } from "next/navigation";
-import { CalendarDays, MapPin } from "lucide-react";
+import {
+    CalendarDays,
+    MapPin,
+    Cake,
+    Shirt,
+} from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { EVENT_TYPE_LABELS } from "@/features/events/lib/event-labels";
@@ -7,10 +12,10 @@ import { getPublicEventBySlug } from "@/features/public-event/services/public-ev
 import { PublicGiftList } from "@/features/public-event/components/public-gift-list";
 import type { Metadata } from "next";
 import Link from "next/link";
+import { EventDateTime } from "@/features/events/components/event-date-time";
 import { CountdownLabel } from "@/features/public-event/components/countdown-label";
 import { ForestDecor } from "@/components/storybook/story-decor";
 import { PendingPurchasePrompt } from "@/features/public-event/components/pending-purchase-prompt";
-import next from "next";
 
 type PublicEventPageProps = {
     params: Promise<{
@@ -61,9 +66,15 @@ export default async function PublicEventPage({ params }: PublicEventPageProps) 
                         {event.name}
                     </h1>
 
-                    <p className="mt-6 max-w-2xl text-xl font-bold leading-8 text-[#7A5631]">
-                        Lista de regalos para {event.honoreeName}
-                    </p>
+                    {event.type === "GENDER_REVEAL" ? (
+                        <p className="mt-6 max-w-2xl text-xl font-bold leading-8 text-[#7A5631]">
+                            Una lista de regalos para celebrar una gran sorpresa.
+                        </p>
+                    ) : (
+                        <p className="mt-6 max-w-2xl text-xl font-bold leading-8 text-[#7A5631]">
+                            Una lista de regalos preparada con cariño para {event.honoreeName}
+                        </p>
+                    )}
 
                     {event.description ? (
                         <p className="mt-4 max-w-2xl text-base font-semibold leading-7 text-[#8A6332]">
@@ -82,42 +93,95 @@ export default async function PublicEventPage({ params }: PublicEventPageProps) 
                                     <p className="text-xs font-extrabold uppercase tracking-wide text-[#A47A42]">
                                         Fecha
                                     </p>
+
                                     <p className="text-lg font-black text-[#3B2412]">
-                                        {event.date.toLocaleDateString("es-PE", {
-                                            timeZone: "UTC",
-                                        })}{" "}
-                                        · <CountdownLabel date={event.date} />
+                                        <EventDateTime
+                                            startsAt={event.date.toISOString()}
+                                            endsAt={event.endDate?.toISOString()}
+                                            eventTimezone={event.timezone ?? undefined}
+                                        />
                                     </p>
+
+                                    <div className="mt-2">
+                                        <CountdownLabel
+                                            date={event.date}
+                                            timezone={event.timezone}
+                                        />
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
                         <div className="rounded-[2rem] bg-white p-5 shadow-[0_14px_35px_rgba(111,72,29,0.12)]">
-                            <div className="flex items-center gap-4">
-                                <div className="flex size-12 items-center justify-center rounded-2xl bg-[#FFF0C2]">
-                                    <MapPin className="size-6 text-[#C78A21]" />
+                            <div className="flex items-center justify-between gap-4">
+                                <div className="flex items-center gap-4">
+                                    <div className="flex size-12 items-center justify-center rounded-2xl bg-[#FFF0C2]">
+                                        <MapPin className="size-6 text-[#C78A21]" />
+                                    </div>
+
+                                    <div>
+                                        <p className="text-xs font-extrabold uppercase tracking-wide text-[#A47A42]">
+                                            Lugar
+                                        </p>
+
+                                        <p className="text-lg font-black text-[#3B2412]">
+                                            {event.location}
+                                        </p>
+                                    </div>
                                 </div>
 
-                                <div>
-                                    <p className="text-xs font-extrabold uppercase tracking-wide text-[#A47A42]">
-                                        Lugar
-                                    </p>
-                                    <p className="text-lg font-black text-[#3B2412]">
-                                        {event.location}
-                                    </p>
-                                    <p className="">
-                                    </p>
-                                </div>
-                                <Link
-                                    href={event.locationURL}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="text-xs font-extrabold uppercase tracking-wide text-[#A47A42] bg-[#FFF0C2] py-2 px-4 rounded-lg text-center border border-[#A47A42]"
-                                >
-                                    Ver en el mapa
-                                </Link>
+                                {event.locationURL ? (
+                                    <Link
+                                        href={event.locationURL}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="shrink-0 rounded-full border border-[#A47A42] bg-[#FFF0C2] px-4 py-2 text-xs font-extrabold uppercase tracking-wide text-[#8A6332] transition hover:bg-[#FFE9AA]"
+                                    >
+                                        Ver mapa
+                                    </Link>
+                                ) : null}
                             </div>
                         </div>
+
+                        {event.type === "BIRTHDAY" && event.birthdayAge ? (
+                            <div className="rounded-[2rem] bg-white p-5 shadow-[0_14px_35px_rgba(111,72,29,0.12)]">
+                                <div className="flex items-center gap-4">
+                                    <div className="flex size-12 items-center justify-center rounded-2xl bg-[#FFE4EC]">
+                                        <Cake className="size-6 text-[#B94F6C]" />
+                                    </div>
+
+                                    <div>
+                                        <p className="text-xs font-extrabold uppercase tracking-wide text-[#A47A42]">
+                                            Cumple
+                                        </p>
+
+                                        <p className="text-lg font-black text-[#3B2412]">
+                                            {event.birthdayAge} años
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        ) : null}
+
+                        {event.dressCode ? (
+                            <div className="rounded-[2rem] bg-white p-5 shadow-[0_14px_35px_rgba(111,72,29,0.12)]">
+                                <div className="flex items-center gap-4">
+                                    <div className="flex size-12 items-center justify-center rounded-2xl bg-[#E8F7EE]">
+                                        <Shirt className="size-6 text-[#3E7A59]" />
+                                    </div>
+
+                                    <div>
+                                        <p className="text-xs font-extrabold uppercase tracking-wide text-[#A47A42]">
+                                            Dress code
+                                        </p>
+
+                                        <p className="text-lg font-black text-[#3B2412]">
+                                            {event.dressCode}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        ) : null}
                     </div>
                 </div>
             </section>

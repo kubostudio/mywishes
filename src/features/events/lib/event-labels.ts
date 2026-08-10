@@ -5,7 +5,7 @@ export const EVENT_TYPE_LABELS: Record<EventType, string> = {
     BIRTHDAY: "Cumpleaños",
     WEDDING: "Matrimonio",
     BAPTISM: "Bautizo",
-    GRADUATION: "Graduación",
+    GENDER_REVEAL: "Gender Reveal",
     CHRISTMAS: "Navidad",
     OTHER: "Otro",
 };
