@@ -87,7 +87,7 @@ export function EditEventDialog({ event }: EditEventDialogProps) {
 
     const showGender = eventType !== "GENDER_REVEAL" && eventType !== "CHRISTMAS";
     const showBirthdayAge = eventType === "BIRTHDAY";
-    const showHonoreeName = eventType !== "GENDER_REVEAL";
+    const showHonoreeName = eventType !== "GENDER_REVEAL" && eventType !== "CHRISTMAS";
 
     function onSubmit(values: EventFormInput) {
         startTransition(async () => {
