@@ -1,3 +1,5 @@
+import { Reveal } from "@/components/ui/reveal";
+
 export function Faqs() {
     const faqs = [
         {
@@ -22,42 +24,83 @@ export function Faqs() {
         },
         {
             question: "¿Es gratis?",
-            answer: "Sí. Puedes crear y compartir listas de regalos sin costo.",
+            answer:
+                "Sí. Puedes crear y compartir listas de regalos sin costo.",
         },
     ];
 
     return (
-        <section className="bg-white px-6 py-24 bg-[linear-gradient(0deg,#FFF8E8,#FFEFC4)]">
-            <div className="mx-auto max-w-4xl">
-                <div className="text-center">
-                    <span className="text-sm font-bold uppercase tracking-[0.2em] text-[#A47A42]">
-                        FAQ
-                    </span>
+        <section className="relative overflow-hidden px-6 py-24">
+            <div className="absolute -left-24 top-20 size-72 animate-gentle-float rounded-full bg-[#BFE8D5]/40 blur-3xl" />
 
-                    <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-[#3E260E] md:text-5xl">
-                        Preguntas frecuentes
-                    </h2>
+            <div
+                className="absolute -right-24 bottom-10 size-72 animate-gentle-float rounded-full bg-[#FFD9E2]/30 blur-3xl"
+                style={{ animationDelay: "1.5s" }}
+            />
 
-                    <p className="mt-5 font-semibold text-[#7A4E28]">
-                        Todo lo que necesitas saber antes de crear tu lista de regalos.
-                    </p>
-                </div>
+            <div className="relative mx-auto max-w-4xl">
+                <Reveal direction="up">
+                    <div className="text-center">
+                        <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-[#3E260E] md:text-5xl">
+                            Preguntas frecuentes
+                        </h2>
+
+                        <p className="mt-5 font-semibold text-[#7A4E28]">
+                            Todo lo que necesitas saber antes de crear tu lista de regalos.
+                        </p>
+                    </div>
+                </Reveal>
 
                 <div className="mt-12 space-y-4">
-                    {faqs.map((faq) => (
-                        <details
+                    {faqs.map((faq, index) => (
+                        <Reveal
                             key={faq.question}
-                            className="group rounded-3xl border border-[#F1DFC0] bg-[#FFF8EA] p-6"
+                            direction={index % 2 === 0 ? "left" : "right"}
+                            delay={index * 80}
                         >
-                            <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-lg font-bold text-[#5F4B32]">
-                                {faq.question}
-                                <span className="text-2xl text-[#A47A42] transition-transform group-open:rotate-45">
-                                    +
-                                </span>
-                            </summary>
+                            <details
+                                className="
+                                    group
+                                    rounded-3xl
+                                    border border-[#F1DFC0]
+                                    bg-[#FFF8EA]
+                                    p-6
+                                    transition-all
+                                    duration-300
+                                    hover:-translate-y-1
+                                    hover:border-[#E8C78A]
+                                    hover:shadow-[0_12px_30px_rgba(111,72,29,0.10)]
+                                    open:bg-[#FFFDF7]
+                                    open:shadow-[0_12px_30px_rgba(111,72,29,0.10)]
+                                "
+                            >
+                                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-lg font-bold text-[#5F4B32] transition-colors duration-300 group-open:text-[#B97A22]">
+                                    {faq.question}
 
-                            <p className="mt-4 leading-7 font-semibold text-[#7A4E28]">{faq.answer}</p>
-                        </details>
+                                    <span
+                                        className="
+                                            flex size-8 shrink-0 items-center justify-center
+                                            rounded-full
+                                            bg-[#FFF1B8]
+                                            text-2xl
+                                            leading-none
+                                            text-[#A47A42]
+                                            transition-all
+                                            duration-300
+                                            group-hover:scale-110
+                                            group-open:rotate-45
+                                            group-open:bg-[#FFE38A]
+                                        "
+                                    >
+                                        +
+                                    </span>
+                                </summary>
+
+                                <p className="mt-4 font-semibold leading-7 text-[#7A4E28]">
+                                    {faq.answer}
+                                </p>
+                            </details>
+                        </Reveal>
                     ))}
                 </div>
             </div>
