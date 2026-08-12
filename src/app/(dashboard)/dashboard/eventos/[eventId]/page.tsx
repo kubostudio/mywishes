@@ -132,7 +132,7 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
                             </p>
                         ) : (
                             <p className="mt-6 max-w-2xl text-xl font-bold leading-8 text-[#7A5631]">
-                                Una lista de regalos preparada con cariño para {event.honoreeName}
+                                Una lista de regalos preparada con cariño.
                             </p>
                         )}
 
