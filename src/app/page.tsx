@@ -71,7 +71,7 @@ export default function HomePage() {
             </h1>
 
             <p className="mt-6 max-w-2xl text-xl font-bold leading-8 text-[#7A4E28]">
-              Crea listas de regalos para cumpleaños, Navidad, matrimonios, baby showers o cualquier ocasión especial. Compártelas con un solo enlace.
+              Crea listas de regalos para cumpleaños, Navidad, baby showers o cualquier ocasión especial. Compártelas con un solo enlace.
             </p>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
@@ -214,7 +214,6 @@ export default function HomePage() {
           <ul className="mt-4 space-y-3 text-[#F6E3B8]">
             <li>Baby shower</li>
             <li>Cumpleaños</li>
-            <li>Matrimonios</li>
             <li>Navidad</li>
           </ul>
         </div>
@@ -229,9 +228,23 @@ export default function HomePage() {
         </div>
       </div>
 
-      <div className="mx-auto mt-12 max-w-6xl border-t border-[#7A6548] pt-6 text-sm text-[#F6E3B8]">
-        © 2026 MyWishes. Todos los derechos reservados.
-      </div>
+        <div className="mx-auto mt-12 max-w-6xl border-t border-[#7A6548] pt-6 text-center">
+          <p className="text-sm text-[#F6E3B8]">
+            © 2026 MyWishes. Todos los derechos reservados.
+          </p>
+
+          <p className="mt-5 text-xs font-semibold text-[#DCC79D]">
+            Hecho con cariño por{" "}
+            <a
+              href="https://www.instagram.com/kubo_std/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-black text-[#FFEFC4] transition hover:text-white"
+            >
+              KUBOstudio
+            </a>
+          </p>
+        </div>
     </footer>
     </>
   );
