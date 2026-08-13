@@ -33,6 +33,7 @@ export function RegisterForm() {
             name: "",
             email: "",
             password: "",
+            acceptTerms: false,
         },
     });
 
@@ -144,6 +145,55 @@ export function RegisterForm() {
                                     </div>
                                 </FormControl>
                                 <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+                    <FormField
+                        control={form.control}
+                        name="acceptTerms"
+                        render={({ field }) => (
+                            <FormItem>
+                                <div className="flex items-start gap-3 rounded-[1.5rem] bg-[#FFF8E7] p-4">
+                                    <FormControl>
+                                        <input
+                                            type="checkbox"
+                                            id="acceptTerms"
+                                            checked={field.value}
+                                            onChange={(e) => field.onChange(e.target.checked)}
+                                            className="mt-1 size-4 shrink-0 cursor-pointer accent-[#B97A22]"
+                                        />
+                                    </FormControl>
+
+                                    <div className="min-w-0 flex-1">
+                                        <label
+                                            htmlFor="acceptTerms"
+                                            className="block cursor-pointer text-sm font-semibold leading-6 text-[#7A4E28]"
+                                        >
+                                            Acepto los{" "}
+                                            <Link
+                                                href="/terminos"
+                                                target="_blank"
+                                                onClick={(e) => e.stopPropagation()}
+                                                className="font-black text-[#B97A22] underline underline-offset-2"
+                                            >
+                                                Términos y Condiciones
+                                            </Link>{" "}
+                                            y reconozco la{" "}
+                                            <Link
+                                                href="/privacidad"
+                                                target="_blank"
+                                                onClick={(e) => e.stopPropagation()}
+                                                className="font-black text-[#B97A22] underline underline-offset-2"
+                                            >
+                                                Política de Privacidad
+                                            </Link>
+                                            .
+                                        </label>
+
+                                        <FormMessage className="mt-1" />
+                                    </div>
+                                </div>
                             </FormItem>
                         )}
                     />

@@ -147,6 +147,24 @@ export function LoginForm() {
                 </form>
             </Form>
 
+            <p className="mt-5 text-center text-xs font-semibold leading-5 text-[#8A6332]">
+                Al ingresar, aceptas nuestros{" "}
+                <Link
+                    href="/terminos"
+                    className="font-black text-[#B97A22] underline"
+                >
+                    Términos y Condiciones
+                </Link>{" "}
+                y reconoces nuestra{" "}
+                <Link
+                    href="/privacidad"
+                    className="font-black text-[#B97A22] underline"
+                >
+                    Política de Privacidad
+                </Link>
+                .
+            </p>
+
             <div className="my-6 flex items-center gap-4">
                 <div className="h-0.5 flex-1 bg-[#F1D7A5]" />
                 <span className="text-xs font-black text-[#A47A42]">o</span>

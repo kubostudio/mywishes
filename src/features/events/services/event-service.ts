@@ -23,12 +23,14 @@ export async function createEvent(creatorId: string, input: EventInput) {
             name: input.name,
 
             honoreeName:
-                input.type === "GENDER_REVEAL"
+                input.type === "GENDER_REVEAL" ||
+                input.type === "CHRISTMAS"
                     ? null
                     : input.honoreeName,
 
             gender:
-                input.type === "GENDER_REVEAL"
+                input.type === "GENDER_REVEAL" ||
+                input.type === "CHRISTMAS"
                     ? null
                     : input.gender,
 
@@ -106,12 +108,14 @@ export async function updateEvent(
             name: input.name,
 
             honoreeName:
-                input.type === "GENDER_REVEAL"
+                input.type === "GENDER_REVEAL" ||
+                input.type === "CHRISTMAS"
                     ? null
                     : input.honoreeName,
 
             gender:
-                input.type === "GENDER_REVEAL"
+                input.type === "GENDER_REVEAL" ||
+                input.type === "CHRISTMAS"
                     ? null
                     : input.gender,
 

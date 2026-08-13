@@ -16,40 +16,52 @@ type RegisterResult = {
 export async function registerAction(
     input: RegisterInput
 ): Promise<RegisterResult> {
-    const parsed = registerSchema.safeParse(input);
+    try {
+        const parsed = registerSchema.safeParse(input);
 
-    if (!parsed.success) {
+        if (!parsed.success) {
+            return {
+                success: false,
+                message: "Revisa los datos ingresados.",
+            };
+        }
+
+        const email = parsed.data.email.trim().toLowerCase();
+
+        const existingUser = await prisma.user.findUnique({
+            where: { email },
+        });
+
+        if (existingUser) {
+            return {
+                success: false,
+                message: "Ya existe una cuenta con este email.",
+            };
+        }
+
+        const passwordHash = await bcrypt.hash(
+            parsed.data.password,
+            10
+        );
+
+        await prisma.user.create({
+            data: {
+                name: parsed.data.name.trim(),
+                email,
+                passwordHash,
+            },
+        });
+
+        return {
+            success: true,
+            message: "Cuenta creada correctamente.",
+        };
+    } catch (error) {
+        console.error("registerAction error:", error);
+
         return {
             success: false,
-            message: "Revisa los datos ingresados.",
+            message: "No se pudo crear la cuenta.",
         };
     }
-
-    const email = parsed.data.email.toLowerCase();
-
-    const existingUser = await prisma.user.findUnique({
-        where: { email },
-    });
-
-    if (existingUser) {
-        return {
-            success: false,
-            message: "Ya existe una cuenta con este email.",
-        };
-    }
-
-    const passwordHash = await bcrypt.hash(parsed.data.password, 10);
-
-    await prisma.user.create({
-        data: {
-            name: parsed.data.name,
-            email,
-            passwordHash,
-        },
-    });
-
-    return {
-        success: true,
-        message: "Cuenta creada correctamente.",
-    };
 }

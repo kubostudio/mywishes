@@ -42,6 +42,7 @@ function validateEventRules(
 ) {
     if (
         data.type !== "GENDER_REVEAL" &&
+        data.type !== "CHRISTMAS" &&
         (!data.honoreeName || data.honoreeName.trim().length < 2)
     ) {
         ctx.addIssue({
@@ -51,7 +52,11 @@ function validateEventRules(
         });
     }
 
-    if (data.type !== "GENDER_REVEAL" && !data.gender) {
+    if (
+        data.type !== "GENDER_REVEAL" &&
+        data.type !== "CHRISTMAS" &&
+        !data.gender
+    ) {
         ctx.addIssue({
             code: "custom",
             path: ["gender"],

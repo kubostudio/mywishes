@@ -11,6 +11,17 @@ type EventCardProps = {
     event: Event;
 };
 
+function formatEventDate(date: Date, timeZone?: string | null) {
+    return new Intl.DateTimeFormat("es-PE", {
+        timeZone: timeZone ?? "America/Lima",
+        weekday: "short",
+        day: "numeric",
+        month: "long",
+        hour: "numeric",
+        minute: "2-digit",
+    }).format(date);
+}
+
 export function EventCard({ event }: EventCardProps) {
     return (
         <AppCard className="group overflow-hidden transition hover:-translate-y-1 hover:shadow-[0_18px_45px_rgba(111,72,29,0.18)]">
@@ -23,18 +34,16 @@ export function EventCard({ event }: EventCardProps) {
                     </div>
                 </div>
 
-                <h2 className="mt-5 line-clamp-2 text-2xl font-black leading-tight text-[#3B2412]">
+                <h2 className="mt-3 line-clamp-2 text-2xl font-black leading-tight text-[#3B2412]">
                     {event.name}
                 </h2>
-
-                <p className="mt-2 text-base font-bold text-[#7A5631]">
-                    Para {event.honoreeName}
-                </p>
 
                 <div className="mt-6 space-y-3 text-sm font-bold text-[#8A6A46]">
                     <div className="flex items-center gap-2">
                         <CalendarDays className="size-4 text-[#C78A21]" />
-                        <span>{event.date.toLocaleDateString("es-PE")}</span>
+                        <span className="capitalize">
+                            {formatEventDate(event.date, event.timezone)}
+                        </span>
                     </div>
 
                     <div className="flex items-center gap-2">

@@ -54,9 +54,9 @@ export function CreateEventDialog() {
 
     const eventType = form.watch("type");
 
-    const showGender = eventType !== "GENDER_REVEAL";
+    const showGender = eventType !== "GENDER_REVEAL" && eventType !== "CHRISTMAS";
     const showBirthdayAge = eventType === "BIRTHDAY";
-    const showHonoreeName = eventType !== "GENDER_REVEAL";
+    const showHonoreeName = eventType !== "GENDER_REVEAL" && eventType !== "CHRISTMAS";
 
     function onSubmit(values: EventFormInput) {
         startTransition(async () => {
@@ -165,9 +165,9 @@ export function CreateEventDialog() {
                                                             <option value="BAPTISM">
                                                                 Bautizo
                                                             </option>
-                                                            <option value="WEDDING">
+                                                            {/* <option value="WEDDING">
                                                                 Matrimonio
-                                                            </option>
+                                                            </option> */}
                                                             <option value="CHRISTMAS">
                                                                 Navidad
                                                             </option>
