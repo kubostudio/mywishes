@@ -1,8 +1,14 @@
 "use client";
 
-import { useTransition } from "react";
-import { ExternalLink, GiftIcon, Trash2 } from "lucide-react";
+import { useState, useTransition } from "react";
+import {
+    ExternalLink,
+    GiftIcon,
+    RotateCcw,
+    Trash2,
+} from "lucide-react";
 import { toast } from "sonner";
+import { setGiftAvailableQuantityAction } from "@/features/gifts/actions/set-gift-available-quantity-action";
 
 import { deleteGiftAction } from "@/features/gifts/actions/delete-gift-action";
 import { EditGiftDialog } from "@/features/gifts/components/edit-gift-dialog";
@@ -41,8 +47,14 @@ type GiftCardProps = {
 
 export function GiftCard({ gift }: GiftCardProps) {
     const [isPending, startTransition] = useTransition();
-
     const price = gift.price ? `${gift.currency} ${gift.price}` : null;
+    const currentAvailableQuantity =
+        gift.quantity - gift.purchasedQuantity;
+    const [availableQuantity, setAvailableQuantity] = useState(
+        Math.max(currentAvailableQuantity, 1)
+    );
+    const [availabilityDialogOpen, setAvailabilityDialogOpen] =
+        useState(false);
 
     function handleDelete() {
         startTransition(async () => {
@@ -54,6 +66,32 @@ export function GiftCard({ gift }: GiftCardProps) {
             }
 
             toast.success(result.message);
+        });
+    }
+
+    function handleSetAvailableQuantity() {
+        if (
+            availableQuantity < 1 ||
+            availableQuantity > gift.quantity
+        ) {
+            toast.error("Ingresa una cantidad disponible válida.");
+            return;
+        }
+
+        startTransition(async () => {
+            const result = await setGiftAvailableQuantityAction(
+                gift.id,
+                gift.eventId,
+                gift.quantity === 1 ? 1 : availableQuantity
+            );
+
+            if (!result.success) {
+                toast.error(result.message);
+                return;
+            }
+
+            toast.success(result.message);
+            setAvailabilityDialogOpen(false);
         });
     }
 
@@ -144,6 +182,90 @@ export function GiftCard({ gift }: GiftCardProps) {
                         Ver en tienda
                         <ExternalLink className="ml-2 size-4" />
                     </a>
+                ) : null}
+
+                {gift.purchasedQuantity > 0 ? (
+                    <AlertDialog
+                        open={availabilityDialogOpen}
+                        onOpenChange={(open) => {
+                            setAvailabilityDialogOpen(open);
+
+                            if (open) {
+                                setAvailableQuantity(
+                                    Math.max(currentAvailableQuantity, 1)
+                                );
+                            }
+                        }}
+                    >
+                        <AlertDialogTrigger asChild>
+                            <button
+                                type="button"
+                                disabled={isPending}
+                                className="inline-flex h-11 items-center justify-center rounded-full border-2 border-[#BFE8D5] bg-[#EFFFF7] px-4 text-sm font-black text-[#2F6B4F] transition hover:bg-[#DDF8EA] disabled:opacity-60"
+                            >
+                                <RotateCcw className="mr-2 size-4" />
+
+                                {gift.quantity > 1
+                                    ? "Cambiar disponibilidad"
+                                    : "Marcar disponible"}
+                            </button>
+                        </AlertDialogTrigger>
+
+                        <AlertDialogContent className="rounded-[2rem] border-2 border-[#E8C78A] bg-[#FFFDF7] p-6 shadow-[0_24px_70px_rgba(101,67,33,0.22)]">
+                            <AlertDialogHeader>
+                                <AlertDialogTitle className="text-2xl font-black text-[#3E260E]">
+                                    {gift.quantity > 1
+                                        ? "Cambiar disponibilidad"
+                                        : "¿Volver a poner este regalo disponible?"}
+                                </AlertDialogTitle>
+
+                                <AlertDialogDescription className="text-base font-semibold leading-7 text-[#7A4E28]">
+                                    {gift.quantity > 1
+                                        ? `Este regalo tiene ${gift.quantity} unidades. Actualmente hay ${currentAvailableQuantity} disponibles.`
+                                        : "El regalo volverá a estar disponible para tus invitados."}
+                                </AlertDialogDescription>
+                            </AlertDialogHeader>
+
+                            {gift.quantity > 1 ? (
+                                <div className="space-y-2">
+                                    <label
+                                        htmlFor={`available-${gift.id}`}
+                                        className="text-sm font-black text-[#5A371C]"
+                                    >
+                                        ¿Cuántas unidades quieres dejar disponibles?
+                                    </label>
+
+                                    <input
+                                        id={`available-${gift.id}`}
+                                        type="number"
+                                        min={1}
+                                        max={gift.quantity}
+                                        value={availableQuantity}
+                                        onChange={(event) =>
+                                            setAvailableQuantity(
+                                                Number(event.target.value)
+                                            )
+                                        }
+                                        className="h-12 w-full rounded-full border-2 border-[#E8C78A] bg-[#FFF8E7] px-5 font-bold text-[#4A2D16]"
+                                    />
+                                </div>
+                            ) : null}
+
+                            <AlertDialogFooter>
+                                <AlertDialogCancel className="rounded-full border-2 border-[#E8C78A] bg-white font-black text-[#5A371C] hover:bg-[#FFF1C9]">
+                                    Cancelar
+                                </AlertDialogCancel>
+
+                                <AlertDialogAction
+                                    onClick={handleSetAvailableQuantity}
+                                    disabled={isPending}
+                                    className="rounded-full bg-[#2F6B4F] font-black text-white hover:bg-[#3D8062]"
+                                >
+                                    {isPending ? "Actualizando..." : "Actualizar"}
+                                </AlertDialogAction>
+                            </AlertDialogFooter>
+                        </AlertDialogContent>
+                    </AlertDialog>
                 ) : null}
 
                 <div className="grid grid-cols-2 gap-3">
