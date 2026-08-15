@@ -2,11 +2,10 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { GiftIcon, Search } from "lucide-react";
+import { Check, GiftIcon, Search } from "lucide-react";
 
 import { MarkGiftPurchasedButton } from "@/features/public-event/components/mark-gift-purchased-button";
 import { PurchaseGiftButton } from "@/features/public-event/components/purchase-gift-button";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 type PublicGift = {
@@ -203,24 +202,32 @@ export function PublicGiftList({ eventSlug, gifts }: PublicGiftListProps) {
                             </div>
 
                             <div className="grid gap-3 border-t-2 border-[#F1D7A5] bg-[#FFF8E7] p-5">
-                                {gift.originalUrl ? (
-                                    <PurchaseGiftButton
-                                        originalUrl={gift.originalUrl}
-                                        giftId={gift.id}
-                                        eventSlug={eventSlug}
-                                        giftName={gift.name}
-                                        quantity={gift.quantity}
-                                        purchasedQuantity={gift.purchasedQuantity}
-                                    />
-                                ) : null}
+                                {gift.status === "PURCHASED" ? (
+                                    <div className="inline-flex h-12 w-full items-center justify-center rounded-full bg-[#EFFFF7] px-6 text-sm font-black text-[#2F6B4F]">
+                                        <Check className="mr-2 size-5" />
+                                        Regalo completado
+                                    </div>
+                                ) : (
+                                    <>
+                                        {gift.originalUrl ? (
+                                            <PurchaseGiftButton
+                                                originalUrl={gift.originalUrl}
+                                                giftId={gift.id}
+                                                eventSlug={eventSlug}
+                                                giftName={gift.name}
+                                                quantity={gift.quantity}
+                                                purchasedQuantity={gift.purchasedQuantity}
+                                            />
+                                        ) : null}
 
-                                <MarkGiftPurchasedButton
-                                    giftId={gift.id}
-                                    eventSlug={eventSlug}
-                                    disabled={gift.status === "PURCHASED"}
-                                    quantity={gift.quantity}
-                                    purchasedQuantity={gift.purchasedQuantity}
-                                />
+                                        <MarkGiftPurchasedButton
+                                            giftId={gift.id}
+                                            eventSlug={eventSlug}
+                                            quantity={gift.quantity}
+                                            purchasedQuantity={gift.purchasedQuantity}
+                                        />
+                                    </>
+                                )}
                             </div>
                         </article>
                     ))}

@@ -23,6 +23,7 @@ export function PurchaseGiftButton({
 }: PurchaseGiftButtonProps) {
     const [mounted, setMounted] = useState(false);
     const [open, setOpen] = useState(false);
+    const isCompleted = purchasedQuantity >= quantity;
 
     useEffect(() => {
         setMounted(true);
@@ -105,11 +106,18 @@ export function PurchaseGiftButton({
         <>
             <button
                 type="button"
+                disabled={isCompleted}
                 onClick={() => setOpen(true)}
-                className="inline-flex h-12 w-full items-center justify-center rounded-full border-2 border-[#E8C78A] bg-white px-6 text-sm font-black text-[#5A371C] transition hover:bg-[#FFF1C9]"
+                className="inline-flex h-12 w-full items-center justify-center rounded-full border-2 border-[#E8C78A] bg-white px-6 text-sm font-black text-[#5A371C] transition hover:bg-[#FFF1C9] disabled:pointer-events-none disabled:bg-[#E7DDC7] disabled:text-[#8A7A62]"
             >
-                Comprar
-                <ExternalLink className="ml-2 size-4" />
+                {isCompleted ? (
+                    "Regalo completado"
+                ) : (
+                    <>
+                        Comprar
+                        <ExternalLink className="ml-2 size-4" />
+                    </>
+                )}
             </button>
 
             {modal}

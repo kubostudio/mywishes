@@ -129,6 +129,99 @@ export async function markGiftAsPurchased(giftId: string, quantityToPurchase = 1
     });
 }
 
+export async function setGiftAvailableQuantity(
+    creatorId: string,
+    giftId: string,
+    availableQuantity: number
+) {
+    const gift = await prisma.gift.findFirst({
+        where: {
+            id: giftId,
+            deletedAt: null,
+            event: {
+                creatorId,
+                deletedAt: null,
+            },
+        },
+        select: {
+            id: true,
+            quantity: true,
+        },
+    });
+
+    if (!gift) {
+        throw new Error("Regalo no encontrado.");
+    }
+
+    if (
+        availableQuantity < 1 ||
+        availableQuantity > gift.quantity
+    ) {
+        throw new Error("Cantidad disponible inválida.");
+    }
+
+    const purchasedQuantity =
+        gift.quantity - availableQuantity;
+
+    return prisma.gift.update({
+        where: {
+            id: gift.id,
+        },
+        data: {
+            purchasedQuantity,
+            status:
+                purchasedQuantity >= gift.quantity
+                    ? "PURCHASED"
+                    : "AVAILABLE",
+            purchasedAt:
+                purchasedQuantity >= gift.quantity
+                    ? new Date()
+                    : null,
+        },
+    });
+}
+
+export async function markGiftAsAvailable(
+    creatorId: string,
+    giftId: string
+) {
+    const gift = await prisma.gift.findFirst({
+        where: {
+            id: giftId,
+            deletedAt: null,
+            event: {
+                creatorId,
+                deletedAt: null,
+            },
+        },
+        select: {
+            id: true,
+            eventId: true,
+            purchasedQuantity: true,
+            status: true,
+        },
+    });
+
+    if (!gift) {
+        throw new Error("Regalo no encontrado.");
+    }
+
+    if (gift.purchasedQuantity === 0 && gift.status === "AVAILABLE") {
+        throw new Error("El regalo ya está disponible.");
+    }
+
+    return prisma.gift.update({
+        where: {
+            id: gift.id,
+        },
+        data: {
+            status: "AVAILABLE",
+            purchasedQuantity: 0,
+            purchasedAt: null,
+        },
+    });
+}
+
 export async function updateGift(
     creatorId: string,
     giftId: string,
