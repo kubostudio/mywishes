@@ -123,17 +123,17 @@ export function PublicGiftList({ eventSlug, gifts }: PublicGiftListProps) {
                     {filteredGifts.map((gift) => (
                         <article
                             key={gift.id}
-                            className="group overflow-hidden rounded-[2rem] border-2 border-[#E8C98B] bg-white shadow-[0_10px_30px_rgba(111,72,29,0.12)] transition hover:-translate-y-1 hover:shadow-[0_18px_45px_rgba(111,72,29,0.18)]"
+                            className="group flex h-full flex-col overflow-hidden rounded-[2rem] border-2 border-[#E8C98B] bg-white shadow-[0_10px_30px_rgba(111,72,29,0.12)] transition hover:-translate-y-1 hover:shadow-[0_18px_45px_rgba(111,72,29,0.18)]"
                         >
-                            <div className="relative bg-[radial-gradient(circle_at_50%_35%,#FFF1B8,transparent_55%),#FFF8E7]">
+                            <div className="relative shrink-0 bg-[radial-gradient(circle_at_50%_35%,#FFF1B8,transparent_55%),#FFF8E7]">
                                 {gift.imageUrl ? (
                                     <img
                                         src={gift.imageUrl}
                                         alt={gift.name}
-                                        className="aspect-square w-full object-contain p-8 transition duration-200 group-hover:scale-[1.03]"
+                                        className="h-56 w-full object-contain p-5 transition duration-200 group-hover:scale-[1.03]"
                                     />
                                 ) : (
-                                    <div className="flex aspect-square w-full items-center justify-center">
+                                    <div className="flex h-56 w-full items-center justify-center">
                                         <GiftIcon className="size-14 text-[#C78A21]" />
                                     </div>
                                 )}
@@ -151,22 +151,26 @@ export function PublicGiftList({ eventSlug, gifts }: PublicGiftListProps) {
                                 </div>
                             </div>
 
-                            <div className="p-5">
-                                <h3 className="line-clamp-2 text-2xl font-black leading-tight text-[#3B2412]">
+                            <div className="flex min-h-[250px] flex-1 flex-col p-5">
+                                <h3 className="line-clamp-2 min-h-[3.75rem] text-2xl font-black leading-tight text-[#3B2412]">
                                     {gift.name}
                                 </h3>
 
-                                {gift.brand ? (
-                                    <p className="mt-2 text-base font-bold text-[#7A5631]">
-                                        {gift.brand}
-                                    </p>
-                                ) : null}
+                                <div className="mt-2 min-h-6">
+                                    {gift.brand ? (
+                                        <p className="text-base font-bold text-[#7A5631]">
+                                            {gift.brand}
+                                        </p>
+                                    ) : null}
+                                </div>
 
-                                {gift.price ? (
-                                    <p className="mt-4 text-2xl font-black text-[#5A371C]">
-                                        {gift.currency} {gift.price}
-                                    </p>
-                                ) : null}
+                                <div className="mt-4 min-h-9">
+                                    {gift.price ? (
+                                        <p className="text-2xl font-black text-[#5A371C]">
+                                            {gift.currency} {gift.price}
+                                        </p>
+                                    ) : null}
+                                </div>
 
                                 {gift.quantity > 1 ? (
                                     <div className="mt-3 rounded-full bg-[#FFF1B8] px-4 py-2 text-sm font-black text-[#5A371C]">
@@ -179,29 +183,35 @@ export function PublicGiftList({ eventSlug, gifts }: PublicGiftListProps) {
                                         {gift.description}
                                     </p>
                                 ) : null}
-                               
-                                <div className="mt-4 flex flex-wrap gap-2">
-                                    {gift.color ? (
-                                        <span className="rounded-full bg-[#FFF1B8] px-3 py-1 text-xs font-black text-[#5A371C]">
-                                            Color: {gift.color}
-                                        </span>
-                                    ) : null}
 
-                                    {gift.size ? (
-                                        <span className="rounded-full bg-[#FFF1B8] px-3 py-1 text-xs font-black text-[#5A371C]">
-                                            Talla: {gift.size}
-                                        </span>
-                                    ) : null}
+                                <div className="mt-auto pt-4">
+                                    {(gift.color || gift.size || gift.dimensions) ? (
+                                        <div className="flex min-h-[58px] flex-wrap content-start gap-2">
+                                            {gift.color ? (
+                                                <span className="rounded-full bg-[#FFF1B8] px-3 py-1 text-xs font-black text-[#5A371C]">
+                                                    Color: {gift.color}
+                                                </span>
+                                            ) : null}
 
-                                    {gift.dimensions ? (
-                                        <span className="rounded-full bg-[#FFF1B8] px-3 py-1 text-xs font-black text-[#5A371C]">
-                                            Medidas: {gift.dimensions}
-                                        </span>
-                                    ) : null}
+                                            {gift.size ? (
+                                                <span className="rounded-full bg-[#FFF1B8] px-3 py-1 text-xs font-black text-[#5A371C]">
+                                                    Talla: {gift.size}
+                                                </span>
+                                            ) : null}
+
+                                            {gift.dimensions ? (
+                                                <span className="rounded-full bg-[#FFF1B8] px-3 py-1 text-xs font-black text-[#5A371C]">
+                                                    Medidas: {gift.dimensions}
+                                                </span>
+                                            ) : null}
+                                        </div>
+                                    ) : (
+                                        <div className="min-h-[58px]" />
+                                    )}
                                 </div>
                             </div>
 
-                            <div className="grid gap-3 border-t-2 border-[#F1D7A5] bg-[#FFF8E7] p-5">
+                            <div className="grid min-h-[132px] shrink-0 content-center gap-3 border-t-2 border-[#F1D7A5] bg-[#FFF8E7] p-5">
                                 {gift.status === "PURCHASED" ? (
                                     <div className="inline-flex h-12 w-full items-center justify-center rounded-full bg-[#EFFFF7] px-6 text-sm font-black text-[#2F6B4F]">
                                         <Check className="mr-2 size-5" />
