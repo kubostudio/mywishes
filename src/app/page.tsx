@@ -254,7 +254,7 @@ export default function HomePage() {
           <p className="mt-5 text-xs font-semibold text-[#DCC79D]">
             Hecho con cariño por{" "}
             <a
-              href="https://www.instagram.com/kubo_std/"
+              href="https://kubostudio.co/"
               target="_blank"
               rel="noopener noreferrer"
               className="font-black text-[#FFEFC4] transition hover:text-white"
