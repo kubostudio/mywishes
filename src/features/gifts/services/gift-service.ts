@@ -2,6 +2,7 @@ import { Prisma } from "@prisma/client";
 
 import { prisma } from "@/lib/prisma";
 import type { GiftData } from "@/features/gifts/schemas/gift-schema";
+import { sanitizeText, sanitizeUrl } from "@/lib/sanitization";
 
 export async function createGift(creatorId: string, input: GiftData) {
     const event = await prisma.event.findFirst({
@@ -32,21 +33,22 @@ export async function createGift(creatorId: string, input: GiftData) {
     }
 
     const nextPosition = (event.gifts[0]?.position ?? -1) + 1;
+    const safeQuantity = Math.min(Math.max(1, input.quantity || 1), 9999);
 
     return prisma.gift.create({
         data: {
             eventId: event.id,
-            name: input.name,
-            quantity: input.quantity || 1,
-            imageUrl: input.imageUrl || null,
-            brand: input.brand || null,
+            name: sanitizeText(input.name, 150),
+            quantity: safeQuantity,
+            imageUrl: sanitizeUrl(input.imageUrl),
+            brand: input.brand ? sanitizeText(input.brand, 100) : null,
             price: input.price ? new Prisma.Decimal(input.price) : null,
-            currency: input.currency || "PEN",
-            description: input.description || null,
-            color: input.color || null,
-            size: input.size || null,
-            dimensions: input.dimensions || null,
-            originalUrl: input.originalUrl || null,
+            currency: (input.currency || "PEN").toUpperCase().slice(0, 3),
+            description: input.description ? sanitizeText(input.description, 2000) : null,
+            color: input.color ? sanitizeText(input.color, 50) : null,
+            size: input.size ? sanitizeText(input.size, 50) : null,
+            dimensions: input.dimensions ? sanitizeText(input.dimensions, 50) : null,
+            originalUrl: sanitizeUrl(input.originalUrl),
             position: nextPosition,
         },
     });
@@ -82,15 +84,25 @@ export async function softDeleteGift(creatorId: string, giftId: string) {
     });
 }
 
-export async function markGiftAsPurchased(giftId: string, quantityToPurchase = 1) {
+export async function markGiftAsPurchased(
+    giftId: string,
+    eventSlug: string,
+    quantityToPurchase = 1
+) {
     return prisma.$transaction(async (tx) => {
+        // Enforce that gift belongs to the active event with eventSlug
         const gift = await tx.gift.findFirst({
             where: {
                 id: giftId,
                 deletedAt: null,
+                event: {
+                    slug: eventSlug,
+                    deletedAt: null,
+                },
             },
             select: {
                 id: true,
+                eventId: true,
                 quantity: true,
                 purchasedQuantity: true,
                 status: true,
@@ -248,26 +260,28 @@ export async function updateGift(
         throw new Error("Regalo no encontrado.");
     }
 
+    const safeQuantity = Math.min(Math.max(1, input.quantity || 1), 9999);
+
     return prisma.gift.update({
         where: {
             id: gift.id,
         },
         data: {
-            name: input.name,
-            quantity: input.quantity || 1,
+            name: sanitizeText(input.name, 150),
+            quantity: safeQuantity,
             status:
-                input.quantity > gift.purchasedQuantity ? "AVAILABLE" : "PURCHASED",
+                safeQuantity > gift.purchasedQuantity ? "AVAILABLE" : "PURCHASED",
             purchasedAt:
-                input.quantity > gift.purchasedQuantity ? null : new Date(),
-            imageUrl: input.imageUrl || null,
-            brand: input.brand || null,
+                safeQuantity > gift.purchasedQuantity ? null : new Date(),
+            imageUrl: sanitizeUrl(input.imageUrl),
+            brand: input.brand ? sanitizeText(input.brand, 100) : null,
             price: input.price ? new Prisma.Decimal(input.price) : null,
-            currency: input.currency || "PEN",
-            description: input.description || null,
-            color: input.color || null,
-            size: input.size || null,
-            dimensions: input.dimensions || null,
-            originalUrl: input.originalUrl || null,
+            currency: (input.currency || "PEN").toUpperCase().slice(0, 3),
+            description: input.description ? sanitizeText(input.description, 2000) : null,
+            color: input.color ? sanitizeText(input.color, 50) : null,
+            size: input.size ? sanitizeText(input.size, 50) : null,
+            dimensions: input.dimensions ? sanitizeText(input.dimensions, 50) : null,
+            originalUrl: sanitizeUrl(input.originalUrl),
         },
     });
 }
@@ -292,12 +306,16 @@ export async function reorderGifts(
         throw new Error("Evento no encontrado.");
     }
 
-    if (!giftIds.length) {
+    const uniqueGiftIds = Array.from(
+        new Set(giftIds.filter((id) => typeof id === "string" && id.trim().length > 0))
+    );
+
+    if (!uniqueGiftIds.length) {
         throw new Error("No llegaron regalos para ordenar.");
     }
 
     const values = Prisma.join(
-        giftIds.map((giftId, index) =>
+        uniqueGiftIds.map((giftId, index) =>
             Prisma.sql`(${giftId}::text, ${index}::int)`
         )
     );

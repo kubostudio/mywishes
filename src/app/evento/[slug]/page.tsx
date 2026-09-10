@@ -4,11 +4,13 @@ import {
     MapPin,
     Cake,
     Shirt,
+    MessageSquareHeart,
 } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { EVENT_TYPE_LABELS } from "@/features/events/lib/event-labels";
 import { getPublicEventBySlug } from "@/features/public-event/services/public-event-service";
+import { getApprovedMessagesCountByEventSlug } from "@/features/messages/services/message-service";
 import { PublicGiftList } from "@/features/public-event/components/public-gift-list";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -16,6 +18,7 @@ import { EventDateTime } from "@/features/events/components/event-date-time";
 import { CountdownLabel } from "@/features/public-event/components/countdown-label";
 import { ForestDecor } from "@/components/storybook/story-decor";
 import { PendingPurchasePrompt } from "@/features/public-event/components/pending-purchase-prompt";
+import { getSafeExternalUrl } from "@/lib/sanitization";
 
 type PublicEventPageProps = {
     params: Promise<{
@@ -48,6 +51,8 @@ export default async function PublicEventPage({ params }: PublicEventPageProps) 
     if (!event) {
         notFound();
     }
+
+    const messagesCount = await getApprovedMessagesCountByEventSlug(slug);
 
     return (
         <main className="relative min-h-screen overflow-hidden bg-[linear-gradient(180deg,#FFF8E8,#FFEFC4)]">
@@ -94,13 +99,11 @@ export default async function PublicEventPage({ params }: PublicEventPageProps) 
                                         Fecha
                                     </p>
 
-                                    <p className="text-lg font-black text-[#3B2412]">
-                                        <EventDateTime
-                                            startsAt={event.date.toISOString()}
-                                            endsAt={event.endDate?.toISOString()}
-                                            eventTimezone={event.timezone ?? undefined}
-                                        />
-                                    </p>
+                                    <EventDateTime
+                                        startsAt={event.date.toISOString()}
+                                        endsAt={event.endDate?.toISOString()}
+                                        eventTimezone={event.timezone ?? undefined}
+                                    />
 
                                     <div className="mt-2">
                                         <CountdownLabel
@@ -130,12 +133,12 @@ export default async function PublicEventPage({ params }: PublicEventPageProps) 
                                     </div>
                                 </div>
 
-                                {event.locationURL ? (
+                                {getSafeExternalUrl(event.locationURL) ? (
                                     <Link
-                                        href={event.locationURL}
+                                        href={getSafeExternalUrl(event.locationURL)!}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="shrink-0 rounded-full border border-[#A47A42] bg-[#FFF0C2] px-4 py-2 text-xs font-extrabold uppercase tracking-wide text-[#8A6332] transition hover:bg-[#FFE9AA]"
+                                        className="shrink-0 rounded-full bg-[#F8C63D] px-4 py-2 text-xs font-extrabold uppercase tracking-wide text-[#3E260E] shadow-[0_3px_0_#B97A22] transition group-hover:bg-[#FFD85F]"
                                     >
                                         Ver mapa
                                     </Link>
@@ -182,6 +185,35 @@ export default async function PublicEventPage({ params }: PublicEventPageProps) 
                                 </div>
                             </div>
                         ) : null}
+
+                        {/* Dedicatorias de invitados */}
+                        <div className="flex items-center justify-between gap-4 group block rounded-[2rem] bg-white p-5 shadow-[0_14px_35px_rgba(111,72,29,0.12)]">
+                            <div className="flex items-center gap-4">
+                                <div className="flex size-12 items-center justify-center rounded-2xl bg-[#FFF1B8]">
+                                    <MessageSquareHeart className="size-6 text-[#B97A22]" />
+                                </div>
+
+                                <div>
+                                    <p className="text-xs font-extrabold uppercase tracking-wide text-[#A47A42]">
+                                        Dedicatorias
+                                    </p>
+
+                                    <p className="text-lg font-black text-[#3B2412]">
+                                        {messagesCount === 1
+                                            ? "1 dedicatoria"
+                                            : messagesCount > 1
+                                                ? `${messagesCount} dedicatorias`
+                                                : "Libro de mensajes"}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <Link
+                                href={`/evento/${event.slug}/mensajes`}
+                                className="shrink-0 rounded-full bg-[#F8C63D] px-4 py-2 text-xs font-extrabold uppercase tracking-wide text-[#3E260E] shadow-[0_3px_0_#B97A22]">
+                                Ver mensajes
+                            </Link>
+                        </div>
                     </div>
                 </div>
             </section>

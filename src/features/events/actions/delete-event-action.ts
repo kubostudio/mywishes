@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 
 import { requireUser } from "@/lib/auth-session";
 import { softDeleteEvent } from "@/features/events/services/event-service";
+import { rateLimits } from "@/lib/rate-limit";
 
 type DeleteEventResult = {
     success: boolean;
@@ -16,7 +17,23 @@ export async function deleteEventAction(
     try {
         const user = await requireUser();
 
-        await softDeleteEvent(user.id, eventId);
+        const limit = rateLimits.mutation(user.id);
+        if (!limit.success) {
+            return {
+                success: false,
+                message: "Has realizado muchas acciones recientemente. Espera unos segundos.",
+            };
+        }
+
+        const safeEventId = typeof eventId === "string" ? eventId.trim() : "";
+        if (!safeEventId || safeEventId.length > 64) {
+            return {
+                success: false,
+                message: "Identificador de evento inválido.",
+            };
+        }
+
+        await softDeleteEvent(user.id, safeEventId);
 
         revalidatePath("/dashboard");
 
@@ -25,7 +42,7 @@ export async function deleteEventAction(
             message: "Evento eliminado correctamente.",
         };
     } catch (error) {
-        console.error("deleteEventAction error:", error);
+        console.error("deleteEventAction error:", error instanceof Error ? error.message : "unknown");
 
         return {
             success: false,

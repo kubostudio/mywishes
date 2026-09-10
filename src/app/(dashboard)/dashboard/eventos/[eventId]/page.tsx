@@ -16,6 +16,8 @@ import { EventDateTime } from "@/features/events/components/event-date-time";
 import { StoryBadge } from "@/components/storybook/story-badge";
 import { StoryCard } from "@/components/storybook/story-card";
 import { StoryLinkButton } from "@/components/storybook/story-button";
+import { getMessagesForEventCreator } from "@/features/messages/services/message-service";
+import { EventMessagesModeration } from "@/features/messages/components/event-messages-moderation";
 
 type EventDetailPageProps = {
     params: Promise<{
@@ -102,7 +104,7 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
     const availableGifts = gifts.filter((gift) => gift.status === "AVAILABLE");
     const purchasedGifts = gifts.filter((gift) => gift.status === "PURCHASED");
     const daysUntilEvent = getDaysUntil(event.date);
-    console.log(event.date)
+    const messages = await getMessagesForEventCreator(user.id, event.id);
 
     return (
         <div className="relative space-y-8 overflow-hidden">
@@ -387,6 +389,12 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
                     </div>
                 )}
             </StoryCard>
+
+            <EventMessagesModeration
+                eventId={event.id}
+                eventSlug={event.slug}
+                messages={messages}
+            />
         </div>
     );
 }

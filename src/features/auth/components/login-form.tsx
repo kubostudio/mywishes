@@ -23,12 +23,14 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 
+import { getSafeCallbackUrl } from "@/lib/sanitization";
+
 export function LoginForm() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const [isPending, startTransition] = useTransition();
 
-    const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
+    const callbackUrl = getSafeCallbackUrl(searchParams.get("callbackUrl"));
 
     const form = useForm<LoginInput>({
         resolver: zodResolver(loginSchema),
