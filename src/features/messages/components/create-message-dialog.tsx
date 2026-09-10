@@ -85,11 +85,6 @@ export function CreateMessageDialog({
                         <MessageSquareHeart className="size-7 text-[#B97A22]" />
                     </div>
 
-                    <div className="mb-2 inline-flex items-center justify-center gap-1.5 rounded-full bg-[#FFE9AA] px-3.5 py-1 text-xs font-black text-[#5A371C]">
-                        <Sparkles className="size-3 text-[#B97A22]" />
-                        Libro de dedicatorias
-                    </div>
-
                     <DialogTitle className="text-2xl font-black text-[#3E260E]">
                         Escribe tu dedicatoria
                     </DialogTitle>
