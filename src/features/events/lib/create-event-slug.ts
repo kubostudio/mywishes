@@ -1,7 +1,9 @@
+import crypto from "node:crypto";
 import slugify from "slugify";
 
-export function createEventSlug(name: string) {
-    const random = Math.random().toString(36).slice(2, 8);
+export function createEventSlug(name: string): string {
+    // Generate cryptographically secure random bytes for unpredictable slugs
+    const random = crypto.randomBytes(3).toString("hex");
 
     return slugify(`${name}-${random}`, {
         lower: true,

@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 
 import { requireUser } from "@/lib/auth-session";
 import { setGiftAvailableQuantity } from "@/features/gifts/services/gift-service";
+import { rateLimits } from "@/lib/rate-limit";
 
 type SetGiftAvailableQuantityResult = {
     success: boolean;
@@ -18,25 +19,54 @@ export async function setGiftAvailableQuantityAction(
     try {
         const user = await requireUser();
 
+        const limit = rateLimits.mutation(user.id);
+        if (!limit.success) {
+            return {
+                success: false,
+                message: "Has realizado muchas acciones recientemente. Espera unos segundos.",
+            };
+        }
+
+        const safeGiftId = typeof giftId === "string" ? giftId.trim() : "";
+        const safeEventId = typeof eventId === "string" ? eventId.trim() : "";
+
+        if (!safeGiftId || safeGiftId.length > 64 || !safeEventId || safeEventId.length > 64) {
+            return {
+                success: false,
+                message: "Parámetros inválidos.",
+            };
+        }
+
+        if (
+            typeof availableQuantity !== "number" ||
+            !Number.isInteger(availableQuantity) ||
+            availableQuantity < 1 ||
+            availableQuantity > 9999
+        ) {
+            return {
+                success: false,
+                message: "Cantidad disponible no válida.",
+            };
+        }
+
         await setGiftAvailableQuantity(
             user.id,
-            giftId,
+            safeGiftId,
             availableQuantity
         );
 
-        revalidatePath(`/dashboard/eventos/${eventId}`);
+        revalidatePath(`/dashboard/eventos/${safeEventId}`);
 
         return {
             success: true,
             message: "Disponibilidad actualizada correctamente.",
         };
     } catch (error) {
+        console.error("setGiftAvailableQuantityAction error:", error instanceof Error ? error.message : "unknown");
+
         return {
             success: false,
-            message:
-                error instanceof Error
-                    ? error.message
-                    : "No se pudo actualizar la disponibilidad.",
+            message: "No se pudo actualizar la disponibilidad.",
         };
     }
 }

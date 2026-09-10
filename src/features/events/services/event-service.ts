@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { createEventSlug } from "@/features/events/lib/create-event-slug";
 import type { EventInput } from "@/features/events/schemas/event-schema";
+import { sanitizeText, sanitizeUrl } from "@/lib/sanitization";
 
 export async function getEventsByCreatorId(creatorId: string) {
     return prisma.event.findMany({
@@ -17,16 +18,23 @@ export async function getEventsByCreatorId(creatorId: string) {
 export async function createEvent(creatorId: string, input: EventInput) {
     const slug = createEventSlug(input.name);
 
+    const sanitizedName = sanitizeText(input.name, 150);
+    const sanitizedHonoree = input.honoreeName ? sanitizeText(input.honoreeName, 100) : null;
+    const sanitizedDressCode = input.dressCode ? sanitizeText(input.dressCode, 100) : null;
+    const sanitizedLocation = sanitizeText(input.location, 255);
+    const safeLocationURL = sanitizeUrl(input.locationURL) || "";
+    const sanitizedDescription = input.description ? sanitizeText(input.description, 2000) : null;
+
     return prisma.event.create({
         data: {
             type: input.type,
-            name: input.name,
+            name: sanitizedName,
 
             honoreeName:
                 input.type === "GENDER_REVEAL" ||
                 input.type === "CHRISTMAS"
                     ? null
-                    : input.honoreeName,
+                    : sanitizedHonoree,
 
             gender:
                 input.type === "GENDER_REVEAL" ||
@@ -39,7 +47,7 @@ export async function createEvent(creatorId: string, input: EventInput) {
                     ? input.birthdayAge
                     : null,
 
-            dressCode: input.dressCode || null,
+            dressCode: sanitizedDressCode,
 
             date: new Date(input.date),
 
@@ -47,11 +55,11 @@ export async function createEvent(creatorId: string, input: EventInput) {
                 ? new Date(input.endDate)
                 : null,
 
-            timezone: input.timezone,
+            timezone: input.timezone ? sanitizeText(input.timezone, 100) : null,
 
-            location: input.location,
-            locationURL: input.locationURL,
-            description: input.description || null,
+            location: sanitizedLocation,
+            locationURL: safeLocationURL,
+            description: sanitizedDescription,
 
             slug,
             creatorId,
@@ -99,19 +107,26 @@ export async function updateEvent(
         throw new Error("Evento no encontrado.");
     }
 
+    const sanitizedName = sanitizeText(input.name, 150);
+    const sanitizedHonoree = input.honoreeName ? sanitizeText(input.honoreeName, 100) : null;
+    const sanitizedDressCode = input.dressCode ? sanitizeText(input.dressCode, 100) : null;
+    const sanitizedLocation = sanitizeText(input.location, 255);
+    const safeLocationURL = sanitizeUrl(input.locationURL) || "";
+    const sanitizedDescription = input.description ? sanitizeText(input.description, 2000) : null;
+
     return prisma.event.update({
         where: {
             id: event.id,
         },
         data: {
             type: input.type,
-            name: input.name,
+            name: sanitizedName,
 
             honoreeName:
                 input.type === "GENDER_REVEAL" ||
                 input.type === "CHRISTMAS"
                     ? null
-                    : input.honoreeName,
+                    : sanitizedHonoree,
 
             gender:
                 input.type === "GENDER_REVEAL" ||
@@ -124,17 +139,17 @@ export async function updateEvent(
                     ? input.birthdayAge
                     : null,
 
-            dressCode: input.dressCode || null,
+            dressCode: sanitizedDressCode,
 
             date: new Date(input.date),
             endDate: input.endDate
                 ? new Date(input.endDate)
                 : null,
-            timezone: input.timezone,
+            timezone: input.timezone ? sanitizeText(input.timezone, 100) : null,
 
-            location: input.location,
-            locationURL: input.locationURL,
-            description: input.description || null,
+            location: sanitizedLocation,
+            locationURL: safeLocationURL,
+            description: sanitizedDescription,
         },
     });
 }

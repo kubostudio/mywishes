@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { ExternalLink, Gift } from "lucide-react";
 
+import { getSafeExternalUrl } from "@/lib/sanitization";
+
 type PurchaseGiftButtonProps = {
     originalUrl: string;
     giftId: string;
@@ -43,7 +45,11 @@ export function PurchaseGiftButton({
         );
 
         setOpen(false);
-        window.open(originalUrl, "_blank", "noopener,noreferrer");
+
+        const safeUrl = getSafeExternalUrl(originalUrl);
+        if (safeUrl) {
+            window.open(safeUrl, "_blank", "noopener,noreferrer");
+        }
     }
 
     const modal =

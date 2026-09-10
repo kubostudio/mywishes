@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect, useState } from "react";
+
 type EventDateTimeProps = {
     startsAt: string;
     endsAt?: string;
@@ -7,31 +9,41 @@ type EventDateTimeProps = {
     showLocalEquivalence?: boolean;
 };
 
+function normalizeSpaces(str: string) {
+    return str.replace(/[\u202F\u00A0]/g, " ");
+}
+
 function formatDate(date: Date, timeZone: string) {
-    return new Intl.DateTimeFormat("es-PE", {
-        timeZone,
-        weekday: "long",
-        day: "numeric",
-        month: "long",
-        year: "numeric",
-    }).format(date);
+    return normalizeSpaces(
+        new Intl.DateTimeFormat("es-PE", {
+            timeZone,
+            weekday: "long",
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+        }).format(date)
+    );
 }
 
 function formatShortDate(date: Date, timeZone: string) {
-    return new Intl.DateTimeFormat("es-PE", {
-        timeZone,
-        weekday: "short",
-        day: "numeric",
-        month: "short",
-    }).format(date);
+    return normalizeSpaces(
+        new Intl.DateTimeFormat("es-PE", {
+            timeZone,
+            weekday: "short",
+            day: "numeric",
+            month: "short",
+        }).format(date)
+    );
 }
 
 function formatTime(date: Date, timeZone: string) {
-    return new Intl.DateTimeFormat("es-PE", {
-        timeZone,
-        hour: "numeric",
-        minute: "2-digit",
-    }).format(date);
+    return normalizeSpaces(
+        new Intl.DateTimeFormat("es-PE", {
+            timeZone,
+            hour: "numeric",
+            minute: "2-digit",
+        }).format(date)
+    );
 }
 
 function getDateKey(date: Date, timeZone: string) {
@@ -58,7 +70,7 @@ function TimeRange({
 }) {
     if (!end) {
         return (
-            <span>
+            <span suppressHydrationWarning>
                 {formatTime(start, timeZone)}
             </span>
         );
@@ -70,7 +82,7 @@ function TimeRange({
 
     if (sameDay) {
         return (
-            <span>
+            <span suppressHydrationWarning>
                 {formatTime(start, timeZone)}
                 {" – "}
                 {formatTime(end, timeZone)}
@@ -79,7 +91,7 @@ function TimeRange({
     }
 
     return (
-        <span>
+        <span suppressHydrationWarning>
             {formatTime(start, timeZone)}
             {" → "}
             {formatShortDate(end, timeZone)},{" "}
@@ -94,25 +106,29 @@ export function EventDateTime({
     eventTimezone,
     showLocalEquivalence = true,
 }: EventDateTimeProps) {
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
     const start = new Date(startsAt);
     const end = endsAt ? new Date(endsAt) : null;
 
-    const viewerTimezone =
-        Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const originalTimezone = eventTimezone || "America/Lima";
+    const viewerTimezone = mounted
+        ? Intl.DateTimeFormat().resolvedOptions().timeZone
+        : originalTimezone;
 
-    const originalTimezone =
-        eventTimezone || viewerTimezone;
-
-    const viewerIsDifferent =
-        viewerTimezone !== originalTimezone;
+    const viewerIsDifferent = mounted && viewerTimezone !== originalTimezone;
 
     return (
         <div className="space-y-2">
-            <p className="text-lg font-black capitalize leading-snug text-[#3B2412]">
+            <p suppressHydrationWarning className="text-lg font-black capitalize leading-snug text-[#3B2412]">
                 {formatDate(start, originalTimezone)}
             </p>
 
-            <p className="text-base font-bold text-[#7A5631]">
+            <p suppressHydrationWarning className="text-base font-bold text-[#7A5631]">
                 <TimeRange
                     start={start}
                     end={end}
@@ -132,7 +148,7 @@ export function EventDateTime({
                         Tu hora local
                     </p>
 
-                    <p className="mt-1 text-sm font-black text-[#3B2412]">
+                    <p suppressHydrationWarning className="mt-1 text-sm font-black text-[#3B2412]">
                         <TimeRange
                             start={start}
                             end={end}

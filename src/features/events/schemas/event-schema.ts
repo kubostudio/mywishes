@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { sanitizeUrl } from "@/lib/sanitization";
 
 const eventBaseSchema = z.object({
     type: z.enum([
@@ -11,22 +12,53 @@ const eventBaseSchema = z.object({
         "OTHER",
     ]),
 
-    name: z.string().min(2, "Ingresa el nombre del evento."),
-    honoreeName: z.string().optional(),
+    name: z
+        .string()
+        .trim()
+        .min(2, "Ingresa el nombre del evento.")
+        .max(150, "El nombre del evento no puede exceder 150 caracteres."),
+
+    honoreeName: z
+        .string()
+        .trim()
+        .max(100, "El nombre del homenajeado no puede exceder 100 caracteres.")
+        .optional(),
 
     gender: z.enum(["MALE", "FEMALE"]).optional(),
 
     birthdayAge: z
         .number()
         .int()
-        .positive("Ingresa una edad válida.")
+        .min(1, "La edad debe ser al menos 1.")
+        .max(130, "Ingresa una edad válida.")
         .optional(),
 
-    dressCode: z.string().optional(),
+    dressCode: z
+        .string()
+        .trim()
+        .max(100, "El código de vestimenta no puede exceder 100 caracteres.")
+        .optional(),
 
-    location: z.string().min(2, "Ingresa el lugar del evento."),
-    locationURL: z.string().min(2, "Ingresa la ubicación en el mapa"),
-    description: z.string().optional(),
+    location: z
+        .string()
+        .trim()
+        .min(2, "Ingresa el lugar del evento.")
+        .max(255, "El lugar del evento no puede exceder 255 caracteres."),
+
+    locationURL: z
+        .string()
+        .trim()
+        .min(2, "Ingresa la ubicación en el mapa.")
+        .max(2048, "El link del mapa no puede exceder 2048 caracteres.")
+        .refine((value) => sanitizeUrl(value) !== null, {
+            message: "Ingresa un link de mapa válido (https://...).",
+        }),
+
+    description: z
+        .string()
+        .trim()
+        .max(2000, "La descripción no puede exceder 2000 caracteres.")
+        .optional(),
 });
 
 function validateEventRules(
@@ -106,7 +138,9 @@ export const eventSchema = eventBaseSchema
 
         timezone: z
             .string()
-            .min(1, "No se pudo detectar la zona horaria."),
+            .trim()
+            .min(1, "No se pudo detectar la zona horaria.")
+            .max(100, "Zona horaria inválida."),
     })
     .superRefine(validateEventRules);
 

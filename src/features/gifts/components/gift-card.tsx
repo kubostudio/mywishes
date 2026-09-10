@@ -12,6 +12,7 @@ import { setGiftAvailableQuantityAction } from "@/features/gifts/actions/set-gif
 
 import { deleteGiftAction } from "@/features/gifts/actions/delete-gift-action";
 import { EditGiftDialog } from "@/features/gifts/components/edit-gift-dialog";
+import { getSafeExternalUrl } from "@/lib/sanitization";
 
 import {
     AlertDialog,
@@ -55,6 +56,8 @@ export function GiftCard({ gift }: GiftCardProps) {
     );
     const [availabilityDialogOpen, setAvailabilityDialogOpen] =
         useState(false);
+
+    const safeOriginalUrl = getSafeExternalUrl(gift.originalUrl);
 
     function handleDelete() {
         startTransition(async () => {
@@ -172,11 +175,11 @@ export function GiftCard({ gift }: GiftCardProps) {
             </div>
 
             <div className="grid gap-3 border-t-2 border-[#F1D7A5] bg-[#FFF8E7] p-4">
-                {gift.originalUrl ? (
+                {safeOriginalUrl ? (
                     <a
-                        href={gift.originalUrl}
+                        href={safeOriginalUrl}
                         target="_blank"
-                        rel="noreferrer"
+                        rel="noopener noreferrer"
                         className="inline-flex h-11 items-center justify-center rounded-full border-2 border-[#E8C78A] bg-white px-4 text-sm font-black text-[#5A371C] transition hover:bg-[#FFF1C9]"
                     >
                         Ver en tienda

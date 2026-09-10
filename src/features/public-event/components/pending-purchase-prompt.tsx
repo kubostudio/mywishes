@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useTransition } from "react";
-import { Gift } from "lucide-react";
+import { Gift, MessageSquareHeart } from "lucide-react";
 import { toast } from "sonner";
 
 import { markGiftAsPurchasedAction } from "@/features/public-event/actions/mark-gift-as-purchased-action";
@@ -18,6 +18,9 @@ type PendingGift = {
 export function PendingPurchasePrompt() {
     const [pendingGift, setPendingGift] = useState<PendingGift | null>(null);
     const [selectedQuantity, setSelectedQuantity] = useState(1);
+    const [guestName, setGuestName] = useState("");
+    const [guestMessage, setGuestMessage] = useState("");
+    const [showGiftInDedication, setShowGiftInDedication] = useState(true);
     const [isPending, startTransition] = useTransition();
 
     useEffect(() => {
@@ -51,6 +54,9 @@ export function PendingPurchasePrompt() {
     function handleClose() {
         window.localStorage.removeItem("pendingPurchasedGift");
         setPendingGift(null);
+        setGuestName("");
+        setGuestMessage("");
+        setShowGiftInDedication(true);
     }
 
     function handleConfirm() {
@@ -60,7 +66,10 @@ export function PendingPurchasePrompt() {
             const result = await markGiftAsPurchasedAction(
                 pendingGift.giftId,
                 pendingGift.eventSlug,
-                selectedQuantity
+                selectedQuantity,
+                guestName.trim() || undefined,
+                guestMessage.trim() || undefined,
+                showGiftInDedication
             );
 
             if (!result.success) {
@@ -68,9 +77,12 @@ export function PendingPurchasePrompt() {
                 return;
             }
 
-            toast.success("¡Listo! Regalo marcado como comprado.");
+            toast.success(result.message);
             window.localStorage.removeItem("pendingPurchasedGift");
             setPendingGift(null);
+            setGuestName("");
+            setGuestMessage("");
+            setShowGiftInDedication(true);
         });
     }
 
@@ -83,12 +95,12 @@ export function PendingPurchasePrompt() {
 
     return (
         <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-[#3E260E]/45 px-4 backdrop-blur-sm">
-            <div className="w-full max-w-sm rounded-[2rem] border-2 border-[#E8C78A] bg-[#FFFDF7] p-6 shadow-[0_24px_70px_rgba(101,67,33,0.28)]">
+            <div className="w-full max-w-md max-h-[90vh] overflow-y-auto rounded-[2rem] border-2 border-[#E8C78A] bg-[#FFFDF7] p-6 shadow-[0_24px_70px_rgba(101,67,33,0.28)]">
                 <div className="mx-auto flex size-14 items-center justify-center rounded-[1.5rem] bg-[#FFF1B8]">
                     <Gift className="size-7 text-[#B97A22]" />
                 </div>
 
-                <h2 className="mt-5 text-center text-2xl font-black text-[#3E260E]">
+                <h2 className="mt-4 text-center text-2xl font-black text-[#3E260E]">
                     ¿Compraste el regalo?
                 </h2>
 
@@ -97,26 +109,76 @@ export function PendingPurchasePrompt() {
                     lista para evitar regalos duplicados.
                 </p>
 
-                <div className="mt-6">
-                    <label className="text-sm font-black text-[#5A371C]">
-                        ¿Cuántos compraste?
-                    </label>
+                {remainingQuantity > 1 && (
+                    <div className="mt-5">
+                        <label className="text-xs font-black uppercase tracking-wide text-[#5A371C]">
+                            ¿Cuántos compraste?
+                        </label>
 
-                    <select
-                        value={selectedQuantity}
-                        onChange={(event) => setSelectedQuantity(Number(event.target.value))}
-                        className="mt-2 h-12 w-full rounded-full border-2 border-[#E8C78A] bg-[#FFF8E7] px-5 text-sm font-black text-[#4A2D16] outline-none focus:border-[#F8C63D] focus:ring-4 focus:ring-[#F8D56B]/35"
-                    >
-                        {Array.from({ length: remainingQuantity }).map((_, index) => {
-                            const value = index + 1;
+                        <select
+                            value={selectedQuantity}
+                            onChange={(event) => setSelectedQuantity(Number(event.target.value))}
+                            className="mt-1.5 h-11 w-full rounded-2xl border-2 border-[#E8C78A] bg-[#FFF8E7] px-4 text-sm font-black text-[#4A2D16] outline-none focus:border-[#F8C63D] focus:ring-4 focus:ring-[#F8D56B]/35"
+                        >
+                            {Array.from({ length: remainingQuantity }).map((_, index) => {
+                                const value = index + 1;
 
-                            return (
-                                <option key={value} value={value}>
-                                    {value}
-                                </option>
-                            );
-                        })}
-                    </select>
+                                return (
+                                    <option key={value} value={value}>
+                                        {value}
+                                    </option>
+                                );
+                            })}
+                        </select>
+                    </div>
+                )}
+
+                {/* Apartado para identificarse y dejar mensaje */}
+                <div className="mt-5 rounded-2xl border border-[#E8C78A]/70 bg-[#FFF8E7] p-4">
+                    <div className="mt-2 flex items-center gap-2 text-xs font-black uppercase tracking-wide text-[#B97A22]">
+                        <MessageSquareHeart className="size-4" />
+                        Deja tu dedicatoria
+                    </div>
+
+                    <div className="mt-3 mb-2 space-y-3">
+                        <div>
+                            <label className="text-xs font-bold text-[#5A371C]">
+                                Tu nombre o familia <span className="font-normal text-[#8A6332]">(opcional)</span>
+                            </label>
+                            <input
+                                type="text"
+                                value={guestName}
+                                onChange={(e) => setGuestName(e.target.value)}
+                                placeholder="Ej. Tía Carmen, Familia López"
+                                maxLength={100}
+                                className="mt-1 h-10 w-full rounded-xl border border-[#E8C78A] bg-white px-3 text-sm font-bold text-[#4A2D16] placeholder:text-[#B4966F] outline-none focus:border-[#F8C63D] focus:ring-2 focus:ring-[#F8D56B]/40"
+                            />
+                        </div>
+
+                        <div>
+                            <label className="text-xs font-bold text-[#5A371C]">
+                                Mensaje o felicitación <span className="font-normal text-[#8A6332]">(opcional)</span>
+                            </label>
+                            <textarea
+                                value={guestMessage}
+                                onChange={(e) => setGuestMessage(e.target.value)}
+                                placeholder="¡Muchas felicidades! Que disfrutes mucho tu día..."
+                                maxLength={1000}
+                                rows={3}
+                                className="mt-1 w-full resize-none rounded-xl border border-[#E8C78A] bg-white p-3 text-sm font-bold text-[#4A2D16] placeholder:text-[#B4966F] outline-none focus:border-[#F8C63D] focus:ring-2 focus:ring-[#F8D56B]/40"
+                            />
+                        </div>
+
+                        <label className="flex cursor-pointer items-center gap-2.5 pt-1 select-none text-xs font-bold text-[#5A371C]">
+                            <input
+                                type="checkbox"
+                                checked={showGiftInDedication}
+                                onChange={(e) => setShowGiftInDedication(e.target.checked)}
+                                className="size-4 rounded border-[#E8C78A] text-[#B97A22] accent-[#B97A22] focus:ring-[#F8D56B]"
+                            />
+                            <span>Mostrar regalo comprado en dedicatoria</span>
+                        </label>
+                    </div>
                 </div>
 
                 <div className="mt-6 grid gap-3">

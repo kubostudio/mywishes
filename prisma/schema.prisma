@@ -42,6 +42,7 @@ model Event {
   timezone      String?
   creator       User      @relation(fields: [creatorId], references: [id], onDelete: Cascade)
   gifts         Gift[]
+  messages      EventMessage[]
 
   @@index([creatorId])
   @@index([slug])
@@ -68,7 +69,8 @@ model Gift {
   updatedAt         DateTime   @updatedAt
   purchasedQuantity Int        @default(0)
   quantity          Int        @default(1)
-  event             Event      @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  event             Event          @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  messages          EventMessage[]
 
   @@index([eventId])
   @@index([status])
@@ -127,4 +129,28 @@ enum GiftStatus {
 enum Gender {
   MALE
   FEMALE
+}
+
+enum MessageStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model EventMessage {
+  id         String        @id @default(cuid())
+  eventId    String
+  giftId     String?
+  authorName String?
+  content    String
+  status     MessageStatus @default(PENDING)
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+  event      Event         @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  gift       Gift?         @relation(fields: [giftId], references: [id], onDelete: SetNull)
+
+  @@index([eventId])
+  @@index([giftId])
+  @@index([status])
+  @@index([createdAt])
 }
