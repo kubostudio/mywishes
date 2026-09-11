@@ -115,8 +115,8 @@ export default async function PublicEventPage({ params }: PublicEventPageProps) 
                             </div>
                         </div>
 
-                        <div className="rounded-[2rem] bg-white p-5 shadow-[0_14px_35px_rgba(111,72,29,0.12)]">
-                            <div className="flex items-center justify-between gap-4">
+                        <div className="rounded-[2rem] bg-white p-5 flex items-center justify-center shadow-[0_14px_35px_rgba(111,72,29,0.12)]">
+                            <div className="flex w-full items-center justify-between gap-4">
                                 <div className="flex items-center gap-4">
                                     <div className="flex size-12 items-center justify-center rounded-2xl bg-[#FFF0C2]">
                                         <MapPin className="size-6 text-[#C78A21]" />
