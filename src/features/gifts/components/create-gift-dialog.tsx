@@ -150,6 +150,31 @@ export function CreateGiftDialog({ eventId }: CreateGiftDialogProps) {
 
                         <FormField
                             control={form.control}
+                            name="originalUrl"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Link original</FormLabel>
+                                    <FormControl>
+                                        <div className="flex gap-2">
+                                            <Input className="honey-input" placeholder="https://tienda.com/producto" {...field} />
+
+                                            <Button
+                                                type="button"
+                                                variant="outline"
+                                                disabled={isFetchingMetadata}
+                                                onClick={handleFetchMetadata}
+                                            >
+                                                {isFetchingMetadata ? "Leyendo..." : "Importar"}
+                                            </Button>
+                                        </div>
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
+                        <FormField
+                            control={form.control}
                             name="name"
                             render={({ field }) => (
                                 <FormItem>
@@ -181,31 +206,6 @@ export function CreateGiftDialog({ eventId }: CreateGiftDialogProps) {
                                             name={field.name}
                                             ref={field.ref}
                                         />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-
-                        <FormField
-                            control={form.control}
-                            name="originalUrl"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Link original</FormLabel>
-                                    <FormControl>
-                                        <div className="flex gap-2">
-                                            <Input className="honey-input" placeholder="https://tienda.com/producto" {...field} />
-
-                                            <Button
-                                                type="button"
-                                                variant="outline"
-                                                disabled={isFetchingMetadata}
-                                                onClick={handleFetchMetadata}
-                                            >
-                                                {isFetchingMetadata ? "Leyendo..." : "Importar"}
-                                            </Button>
-                                        </div>
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>

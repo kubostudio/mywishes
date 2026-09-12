@@ -136,7 +136,32 @@ export function EditGiftDialog({ gift }: EditGiftDialogProps) {
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                         <Input className="h-12 rounded-full border-2 border-[#E8C78A] bg-[#FFF8E7] px-5 font-bold text-[#4A2D16]" type="hidden" {...form.register("eventId")} />
+                        
+                        <FormField
+                            control={form.control}
+                            name="originalUrl"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Link original</FormLabel>
+                                    <FormControl>
+                                        <div className="flex gap-2">
+                                            <Input className="h-12 rounded-full border-2 border-[#E8C78A] bg-[#FFF8E7] px-5 font-bold text-[#4A2D16]" placeholder="https://tienda.com/producto" {...field} />
 
+                                            <Button
+                                                type="button"
+                                                variant="outline"
+                                                disabled={isFetchingMetadata}
+                                                onClick={handleFetchMetadata}
+                                            >
+                                                {isFetchingMetadata ? "Leyendo..." : "Importar"}
+                                            </Button>
+                                        </div>
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        
                         <FormField
                             control={form.control}
                             name="name"
@@ -170,31 +195,6 @@ export function EditGiftDialog({ gift }: EditGiftDialogProps) {
                                             name={field.name}
                                             ref={field.ref}
                                         />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-
-                        <FormField
-                            control={form.control}
-                            name="originalUrl"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Link original</FormLabel>
-                                    <FormControl>
-                                        <div className="flex gap-2">
-                                            <Input className="h-12 rounded-full border-2 border-[#E8C78A] bg-[#FFF8E7] px-5 font-bold text-[#4A2D16]" placeholder="https://tienda.com/producto" {...field} />
-
-                                            <Button
-                                                type="button"
-                                                variant="outline"
-                                                disabled={isFetchingMetadata}
-                                                onClick={handleFetchMetadata}
-                                            >
-                                                {isFetchingMetadata ? "Leyendo..." : "Importar"}
-                                            </Button>
-                                        </div>
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
