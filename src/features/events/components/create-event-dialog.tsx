@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -52,7 +52,7 @@ export function CreateEventDialog() {
         },
     });
 
-    const eventType = form.watch("type");
+    const eventType = useWatch({ control: form.control, name: "type" });
 
     const showGender = eventType !== "GENDER_REVEAL" && eventType !== "CHRISTMAS";
     const showBirthdayAge = eventType === "BIRTHDAY";

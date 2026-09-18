@@ -381,3 +381,209 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ==========================================================================
+   SISTEMA DE PLANTILLAS Y TEMAS DINÁMICOS (MYWISHES)
+   ========================================================================== */
+
+:root {
+  --tmpl-page-bg: linear-gradient(180deg, #FFF8E8 0%, #FFEFC4 100%);
+  --tmpl-card-bg: #FFFDF7;
+  --tmpl-card-subtle: #FFF8E7;
+  --tmpl-card-border: #E8C78A;
+  --tmpl-border-subtle: #F1D7A5;
+  --tmpl-text-title: #3E260E;
+  --tmpl-text-body: #5A371C;
+  --tmpl-text-muted: #7A4E28;
+  --tmpl-accent: #F8C63D;
+  --tmpl-accent-hover: #FFD85F;
+  --tmpl-accent-shadow: #B97A22;
+  --tmpl-accent-text: #3E260E;
+  --tmpl-badge-bg: #FFF1B8;
+  --tmpl-badge-text: #5A371C;
+}
+
+[data-template="storybook"] {
+  --tmpl-page-bg: linear-gradient(180deg, #FFF8E8 0%, #FFEFC4 100%);
+  --tmpl-card-bg: #FFFDF7;
+  --tmpl-card-subtle: #FFF8E7;
+  --tmpl-card-border: #E8C78A;
+  --tmpl-border-subtle: #F1D7A5;
+  --tmpl-text-title: #3E260E;
+  --tmpl-text-body: #5A371C;
+  --tmpl-text-muted: #7A4E28;
+  --tmpl-accent: #F8C63D;
+  --tmpl-accent-hover: #FFD85F;
+  --tmpl-accent-shadow: #B97A22;
+  --tmpl-accent-text: #3E260E;
+  --tmpl-badge-bg: #FFF1B8;
+  --tmpl-badge-text: #5A371C;
+}
+
+[data-template="baby_pastel"] {
+  --tmpl-page-bg: linear-gradient(180deg, #FFF5F7 0%, #F0F7FF 100%);
+  --tmpl-card-bg: #FFFFFF;
+  --tmpl-card-subtle: #FFF0F5;
+  --tmpl-card-border: #F7CAD0;
+  --tmpl-border-subtle: #FDE2E4;
+  --tmpl-text-title: #523B59;
+  --tmpl-text-body: #6B5173;
+  --tmpl-text-muted: #8E7196;
+  --tmpl-accent: #F4978E;
+  --tmpl-accent-hover: #F8AD9D;
+  --tmpl-accent-shadow: #E07A5F;
+  --tmpl-accent-text: #FFFFFF;
+  --tmpl-badge-bg: #FDE2E4;
+  --tmpl-badge-text: #523B59;
+}
+
+[data-template="wedding_gold"] {
+  --tmpl-page-bg: linear-gradient(180deg, #FDFBF7 0%, #F4ECE1 100%);
+  --tmpl-card-bg: #FFFFFF;
+  --tmpl-card-subtle: #FAF6ED;
+  --tmpl-card-border: #E5D4B7;
+  --tmpl-border-subtle: #EFE4D2;
+  --tmpl-text-title: #2C2A29;
+  --tmpl-text-body: #4A4543;
+  --tmpl-text-muted: #7C7470;
+  --tmpl-accent: #D4AF37;
+  --tmpl-accent-hover: #DFBE4B;
+  --tmpl-accent-shadow: #A38321;
+  --tmpl-accent-text: #FFFFFF;
+  --tmpl-badge-bg: #FAF6ED;
+  --tmpl-badge-text: #8C6D1F;
+}
+
+[data-template="baptism_sky"] {
+  --tmpl-page-bg: linear-gradient(180deg, #F8FAFC 0%, #E0F2FE 100%);
+  --tmpl-card-bg: #FFFFFF;
+  --tmpl-card-subtle: #F0F9FF;
+  --tmpl-card-border: #BAE6FD;
+  --tmpl-border-subtle: #E0F2FE;
+  --tmpl-text-title: #0C4A6E;
+  --tmpl-text-body: #0369A1;
+  --tmpl-text-muted: #0284C7;
+  --tmpl-accent: #0284C7;
+  --tmpl-accent-hover: #38BDF8;
+  --tmpl-accent-shadow: #0369A1;
+  --tmpl-accent-text: #FFFFFF;
+  --tmpl-badge-bg: #E0F2FE;
+  --tmpl-badge-text: #0369A1;
+}
+
+[data-template="christmas_magic"] {
+  --tmpl-page-bg: linear-gradient(180deg, #092318 0%, #0F3827 100%);
+  --tmpl-card-bg: #123C2C;
+  --tmpl-card-subtle: #144533;
+  --tmpl-card-border: #1E5840;
+  --tmpl-border-subtle: #184A36;
+  --tmpl-text-title: #FEF3C7;
+  --tmpl-text-body: #FDE68A;
+  --tmpl-text-muted: #FCD34D;
+  --tmpl-accent: #DC2626;
+  --tmpl-accent-hover: #EF4444;
+  --tmpl-accent-shadow: #991B1B;
+  --tmpl-accent-text: #FFFFFF;
+  --tmpl-badge-bg: #1E5840;
+  --tmpl-badge-text: #FDE68A;
+}
+
+/* Aplicación de tema sobre clases utilitarias existentes cuando una plantilla está activa */
+[data-template],
+body[data-template],
+body[data-template] .dashboard-layout-container {
+  background: var(--tmpl-page-bg) !important;
+}
+
+/* Ocultar decoraciones predeterminadas del layout del dashboard cuando una página gestiona su propio tema */
+body[data-template] .dashboard-forest-decor,
+[data-template] .dashboard-forest-decor,
+body[data-template] .dashboard-ambient-orbs,
+[data-template] .dashboard-ambient-orbs {
+  display: none !important;
+}
+
+body[data-template]:not([data-template="storybook"]) .hero-ambient-orbs,
+[data-template]:not([data-template="storybook"]) .hero-ambient-orbs {
+  display: none !important;
+}
+
+/* Adaptación del header del dashboard en temas personalizados */
+body[data-template]:not([data-template="storybook"]) .dashboard-header,
+[data-template]:not([data-template="storybook"]) .dashboard-header {
+  background-color: var(--tmpl-card-subtle) !important;
+  border-color: var(--tmpl-card-border) !important;
+}
+
+body[data-template]:not([data-template="storybook"]) .dashboard-header .text-\[\#3B2412\] {
+  color: var(--tmpl-text-title) !important;
+}
+
+body[data-template]:not([data-template="storybook"]) .dashboard-header .text-\[\#8A6332\] {
+  color: var(--tmpl-text-muted) !important;
+}
+
+[data-template]:not([data-template="storybook"]) .bg-\[\#FFD8A8\],
+[data-template]:not([data-template="storybook"]) .bg-\[\#BFE8D5\],
+[data-template]:not([data-template="storybook"]) .bg-\[\#FFE38A\] {
+  opacity: 0.15;
+}
+
+[data-template="christmas_magic"] .blur-3xl:not([class*="bg-emerald-"]):not([class*="bg-red-"]) {
+  opacity: 0.12;
+}
+
+[data-template]:not([data-template="storybook"]) .bg-\[\#FFFDF7\],
+[data-template]:not([data-template="storybook"]) article,
+[data-template]:not([data-template="storybook"]) .bg-white,
+[data-template]:not([data-template="storybook"]) .bg-white\/80 {
+  background-color: var(--tmpl-card-bg) !important;
+}
+
+[data-template]:not([data-template="storybook"]) .bg-\[\#FFF8E7\],
+[data-template]:not([data-template="storybook"]) .bg-\[\#FFF8E8\],
+[data-template]:not([data-template="storybook"]) .bg-\[\#FFF0F5\],
+[data-template]:not([data-template="storybook"]) .bg-\[\#FFF1D6\] {
+  background-color: var(--tmpl-card-subtle) !important;
+}
+
+[data-template]:not([data-template="storybook"]) .border-\[\#E8C78A\],
+[data-template]:not([data-template="storybook"]) .border-\[\#E7C37B\],
+[data-template]:not([data-template="storybook"]) .border-\[\#E8C98B\],
+[data-template]:not([data-template="storybook"]) .border-\[\#F1D7A5\] {
+  border-color: var(--tmpl-card-border) !important;
+}
+
+[data-template]:not([data-template="storybook"]) .text-\[\#3E260E\],
+[data-template]:not([data-template="storybook"]) .text-\[\#3B2412\] {
+  color: var(--tmpl-text-title) !important;
+}
+
+[data-template]:not([data-template="storybook"]) .text-\[\#5A371C\],
+[data-template]:not([data-template="storybook"]) .text-\[\#7A4E28\],
+[data-template]:not([data-template="storybook"]) .text-\[\#7A5631\],
+[data-template]:not([data-template="storybook"]) .text-\[\#8A6332\] {
+  color: var(--tmpl-text-body) !important;
+}
+
+[data-template]:not([data-template="storybook"]) .text-\[\#A47A42\],
+[data-template]:not([data-template="storybook"]) .text-\[\#9C7A4C\],
+[data-template]:not([data-template="storybook"]) .text-\[\#C78A21\] {
+  color: var(--tmpl-text-muted) !important;
+}
+
+[data-template]:not([data-template="storybook"]) .bg-\[\#F8C63D\] {
+  background-color: var(--tmpl-accent) !important;
+  color: var(--tmpl-accent-text) !important;
+  box-shadow: 0 4px 0 var(--tmpl-accent-shadow) !important;
+}
+
+[data-template]:not([data-template="storybook"]) .bg-\[\#FFE9AA\],
+[data-template]:not([data-template="storybook"]) .bg-\[\#FFF1B8\] {
+  background-color: var(--tmpl-badge-bg) !important;
+  color: var(--tmpl-badge-text) !important;
+}
+
+[data-template]:not([data-template="storybook"]) .shadow-\[0_5px_0_\#B97A22\] {
+  box-shadow: 0 4px 0 var(--tmpl-accent-shadow) !important;
+}

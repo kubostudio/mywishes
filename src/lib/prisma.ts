@@ -5,6 +5,10 @@ const globalForPrisma = globalThis as unknown as {
     prisma: PrismaClient | undefined;
 };
 
+if (globalForPrisma.prisma && !("templatePurchase" in globalForPrisma.prisma)) {
+    globalForPrisma.prisma = undefined;
+}
+
 const adapter = new PrismaPg({
     connectionString: process.env.DATABASE_URL!,
 });

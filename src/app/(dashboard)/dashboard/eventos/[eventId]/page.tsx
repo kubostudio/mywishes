@@ -10,8 +10,11 @@ import { EditEventDialog } from "@/features/events/components/edit-event-dialog"
 import { DeleteEventButton } from "@/features/events/components/delete-event-button";
 import { SortableGiftList } from "@/features/gifts/components/sortable-gift-list";
 import { SortGiftsButtons } from "@/features/gifts/components/sort-gifts-buttons";
-import { ForestDecor } from "@/components/storybook/story-decor";
-import { Gift, Share2, Settings, Sparkles, CalendarDays, MapPin, Cake, Shirt } from "lucide-react";
+import { TemplateDecor } from "@/features/templates/components/template-decor";
+import { TemplateBodyTheme } from "@/features/templates/components/template-body-theme";
+import { ManageTemplatesDialog } from "@/features/templates/components/manage-templates-dialog";
+import { getUserPurchasedTemplateIds } from "@/features/templates/services/template-purchase-service";
+import { Gift, Share2, Settings, Sparkles, CalendarDays, MapPin, Cake, Shirt, Palette } from "lucide-react";
 import { EventDateTime } from "@/features/events/components/event-date-time";
 import { StoryBadge } from "@/components/storybook/story-badge";
 import { StoryCard } from "@/components/storybook/story-card";
@@ -105,14 +108,31 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
     const purchasedGifts = gifts.filter((gift) => gift.status === "PURCHASED");
     const daysUntilEvent = getDaysUntil(event.date);
     const messages = await getMessagesForEventCreator(user.id, event.id);
+    const purchasedTemplateIds = await getUserPurchasedTemplateIds(user.id);
+    const activeTemplate = event.template || "storybook";
+    const customTheme = (event.customTheme as unknown as import("@/features/templates/types").CustomThemeConfig) || null;
 
     return (
-        <div className="relative space-y-8 overflow-hidden">
-            <ForestDecor sections={6} />
-            <div>
+        <div data-template={activeTemplate} className="relative space-y-8 rounded-3xl p-2 md:p-6 transition-colors duration-300">
+            <TemplateBodyTheme templateId={activeTemplate} customTheme={customTheme} />
+            <TemplateDecor
+                templateId={activeTemplate}
+                decorStyle={customTheme?.decorStyle}
+                sections={8}
+                className="fixed inset-0 pointer-events-none z-0"
+            />
+            <div className="relative z-10 flex flex-wrap items-center justify-between gap-4">
                 <StoryLinkButton href="/dashboard" variant="cream">
                     ← Volver a eventos
                 </StoryLinkButton>
+
+                <ManageTemplatesDialog
+                    eventId={event.id}
+                    currentTemplateId={activeTemplate}
+                    customTheme={customTheme}
+                    purchasedTemplateIds={purchasedTemplateIds}
+                    eventType={event.type}
+                />
             </div>
 
             <StoryCard className="relative overflow-hidden p-8 md:p-12">
@@ -278,7 +298,7 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
                 </div>
             </StoryCard>
 
-            <section className="grid gap-6 md:grid-cols-2">
+            <section className="grid gap-6 md:grid-cols-3">
                 <StoryCard className="p-8">
                     <div className="mb-4 flex size-12 items-center justify-center rounded-2xl bg-[#FFE9AA]">
                         <Share2 className="size-6 text-[#B97A22]" />
@@ -300,6 +320,28 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
                         >
                             Ver público
                         </StoryLinkButton>
+                    </div>
+                </StoryCard>
+
+                <StoryCard className="p-8">
+                    <div className="mb-4 flex size-12 items-center justify-center rounded-2xl bg-[#FFE9AA]">
+                        <Palette className="size-6 text-[#B97A22]" />
+                    </div>
+
+                    <h2 className="text-3xl font-bold text-[#3E260E]">Plantillas</h2>
+
+                    <p className="mt-3 text-base font-semibold leading-7 text-[#7A4E28]">
+                        Personaliza los colores, tema y estilo visual de tu evento.
+                    </p>
+
+                    <div className="mt-6 flex flex-wrap gap-3">
+                        <ManageTemplatesDialog
+                            eventId={event.id}
+                            currentTemplateId={activeTemplate}
+                            purchasedTemplateIds={purchasedTemplateIds}
+                            eventType={event.type}
+                            triggerLabel="Cambiar estilo"
+                        />
                     </div>
                 </StoryCard>
 

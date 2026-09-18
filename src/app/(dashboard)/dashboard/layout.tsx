@@ -11,15 +11,15 @@ export default function DashboardLayout({
     children: React.ReactNode;
 }) {
     return (
-        <div className="relative min-h-screen overflow-hidden bg-[linear-gradient(180deg,#FFF8E8,#FFEFC4)]">
-            <ForestDecor sections={6} />
-            <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
+        <div className="dashboard-layout-container relative min-h-screen overflow-hidden transition-colors duration-300 bg-[linear-gradient(180deg,#FFF8E8,#FFEFC4)]">
+            <ForestDecor sections={6} className="dashboard-forest-decor" />
+            <div className="dashboard-ambient-orbs pointer-events-none fixed inset-0 -z-10 overflow-hidden">
                 <div className="absolute -left-24 top-10 size-80 rounded-full bg-[#FFD9E2]/70 blur-3xl" />
                 <div className="absolute right-0 top-24 size-96 rounded-full bg-[#BDEBFF]/70 blur-3xl" />
                 <div className="absolute bottom-0 left-1/3 size-96 rounded-full bg-[#FFE28A]/60 blur-3xl" />
             </div>
 
-            <header className="sticky top-0 z-40 border-b-2 border-[#F1D7A5] bg-[#FFF8E8]/85 backdrop-blur-xl">
+            <header className="dashboard-header sticky top-0 z-40 border-b-2 border-[#F1D7A5] bg-[#FFF8E8]/85 backdrop-blur-xl transition-colors duration-300">
                 <div className="mx-auto flex h-20 max-w-6xl items-center justify-between px-4">
                     <Link href="/dashboard" className="flex items-center gap-3">
                         <div className="flex items-center justify-center relative h-[48px] w-[48px] overflow-visible">

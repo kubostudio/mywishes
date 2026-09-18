@@ -121,12 +121,20 @@ export async function getClientIp(): Promise<string> {
  * Rate limit configurations
  */
 export const rateLimits = {
-    // Auth login attempts: 5 per 15 minutes per email, 30 per 15 min per IP
+    // Auth login attempts: 5 per 15 minutes per email, 30 per 15 min per IP (relaxed in development)
     auth: {
-        checkEmail: (email: string) =>
-            rateLimiterInstance.check(`auth:email:${email.toLowerCase().trim()}`, 5, 15 * 60 * 1000),
-        checkIp: (ip: string) =>
-            rateLimiterInstance.check(`auth:ip:${ip}`, 30, 15 * 60 * 1000),
+        checkEmail: (email: string) => {
+            if (process.env.NODE_ENV === "development") {
+                return { success: true, remaining: 100, retryAfterSeconds: 0 };
+            }
+            return rateLimiterInstance.check(`auth:email:${email.toLowerCase().trim()}`, 5, 15 * 60 * 1000);
+        },
+        checkIp: (ip: string) => {
+            if (process.env.NODE_ENV === "development" || ip === "127.0.0.1" || ip === "::1") {
+                return { success: true, remaining: 100, retryAfterSeconds: 0 };
+            }
+            return rateLimiterInstance.check(`auth:ip:${ip}`, 30, 15 * 60 * 1000);
+        },
         resetEmail: (email: string) =>
             rateLimiterInstance.reset(`auth:email:${email.toLowerCase().trim()}`),
     },

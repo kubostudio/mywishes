@@ -8,7 +8,9 @@ async function main() {
         where: {
             email: "dev@mywishes.local",
         },
-        update: {},
+        update: {
+            passwordHash,
+        },
         create: {
             email: "dev@mywishes.local",
             name: "Dev User",

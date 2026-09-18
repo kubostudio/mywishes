@@ -71,6 +71,8 @@ export async function getApprovedMessagesByEventSlug(slug: string) {
             honoreeName: true,
             slug: true,
             type: true,
+            template: true,
+            customTheme: true,
         },
     });
 

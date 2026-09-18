@@ -2,8 +2,8 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { ArrowLeft } from "lucide-react";
-
-import { ForestDecor } from "@/components/storybook/story-decor";
+import { TemplateDecor } from "@/features/templates/components/template-decor";
+import { TemplateBodyTheme } from "@/features/templates/components/template-body-theme";
 import { getApprovedMessagesByEventSlug } from "@/features/messages/services/message-service";
 import { MessagesViewContainer } from "@/features/messages/components/messages-view-container";
 
@@ -43,17 +43,30 @@ export default async function PublicMessagesPage({
     }
 
     const honoree = event.honoreeName?.trim() || event.name;
+    const activeTemplate = event.template || "storybook";
+    const customTheme = (event.customTheme as unknown as import("@/features/templates/types").CustomThemeConfig) || null;
 
     return (
-        <main className="relative min-h-screen overflow-hidden bg-[linear-gradient(180deg,#FFF8E8,#FFEFC4)]">
-            <ForestDecor sections={5} />
+        <main
+            data-template={activeTemplate}
+            className="relative min-h-screen overflow-hidden transition-colors duration-300"
+        >
+            <TemplateBodyTheme templateId={activeTemplate} customTheme={customTheme} />
+            <TemplateDecor
+                templateId={activeTemplate}
+                decorStyle={customTheme?.decorStyle}
+                sections={8}
+                className="fixed inset-0 pointer-events-none z-0"
+            />
 
             {/* Header Hero */}
             <header className="relative overflow-hidden border-b-2 border-[#F1D7A5] bg-[#FFF8E8]">
                 {/* Background ambient lighting */}
-                <div className="absolute -left-20 top-10 size-72 rounded-full bg-[#FFD9E2]/60 blur-3xl pointer-events-none" />
-                <div className="absolute right-0 top-16 size-80 rounded-full bg-[#FFE28A]/60 blur-3xl pointer-events-none" />
-                <div className="absolute bottom-0 left-1/2 size-72 rounded-full bg-[#BDEBFF]/50 blur-3xl pointer-events-none" />
+                <div className="hero-ambient-orbs pointer-events-none absolute inset-0 overflow-hidden">
+                    <div className="absolute -left-20 top-10 size-72 rounded-full bg-[#FFD9E2]/60 blur-3xl" />
+                    <div className="absolute right-0 top-16 size-80 rounded-full bg-[#FFE28A]/60 blur-3xl" />
+                    <div className="absolute bottom-0 left-1/2 size-72 rounded-full bg-[#BDEBFF]/50 blur-3xl" />
+                </div>
 
                 <div className="relative mx-auto max-w-5xl px-4 py-10 sm:py-14">
                     {/* Back Link */}
