@@ -20,7 +20,6 @@ import { ForestDecor } from "@/components/storybook/story-decor";
 import { AlldrickBabyShowerDecor } from "@/features/events/components/alldrick-baby-shower-decor"
 import { PendingPurchasePrompt } from "@/features/public-event/components/pending-purchase-prompt";
 import { getSafeExternalUrl } from "@/lib/sanitization";
-import { Pooh } from "@/components/storybook/decorations/pooh";
 
 type PublicEventPageProps = {
     params: Promise<{
@@ -92,18 +91,6 @@ export default async function PublicEventPage({ params }: PublicEventPageProps) 
                         : "bg-[#FFF8E8]"
                         }`}
                 />
-                
-                {isAlldrickBabyShower && (
-                    <>
-                        <Pooh
-                            className="right-[7%] top-[22%] h-20 w-20 animate-honeycomb opacity-38 lg:block [--rotate:8deg]"
-                        />
-                        <Pooh
-                            className="left-[4%] top-[20%] h-20 w-20 animate-honeycomb opacity-38 lg:block [--rotate:-20deg]"
-                        />
-                    </>
-                )}
-
 
                 <div className="relative mx-auto max-w-5xl px-4 py-14 md:py-20">
                     <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-12">
