@@ -23,9 +23,9 @@ function MobileAlldrickLayer({ index }: LayerProps) {
             className="absolute left-0 h-[760px] w-full md:hidden"
             style={{ top: `${index * 760}px` }}
         >
-            <div className="absolute -left-20 top-10 size-56 rounded-full bg-[#FFD9A8]/35 blur-3xl" />
-            <div className="absolute -right-24 top-64 size-64 rounded-full bg-[#BFE8D5]/30 blur-3xl" />
-            <div className="absolute bottom-0 left-1/4 size-64 rounded-full bg-[#FFE38A]/25 blur-3xl" />
+            {/* <div className="absolute -left-20 top-10 size-56 rounded-full bg-[#FFD9A8]/35 blur-3xl" /> */}
+            {/* <div className="absolute -right-12 top-64 size-64 rounded-full bg-[#BFE8D5]/30 blur-3xl" /> */}
+            {/* <div className="absolute bottom-0 left-1/4 size-64 rounded-full bg-[#FFE38A]/25 blur-3xl" /> */}
 
             {/* <Cloud className="left-[-12%] top-[5%] h-16 w-36 animate-cloud-drift opacity-45" />
             <Cloud className="right-[-18%] top-[38%] h-16 w-36 animate-cloud-drift-slow opacity-35" /> */}
@@ -63,9 +63,9 @@ function DesktopAlldrickLayer({ index }: LayerProps) {
             {/* <Bee className="left-[54%] top-[18%] animate-bee-float opacity-42" /> */}
             {/* <Bee className="left-[72%] top-[70%] animate-bee-float-delayed opacity-35" /> */}
 
-            <div className="absolute -left-20 top-10 size-72 rounded-full bg-[#FFE28A]/70 blur-3xl" />
+            {/* <div className="absolute -left-20 top-10 size-72 rounded-full bg-[#FFE28A]/70 blur-3xl" />
             <div className="absolute right-0 top-16 size-80 rounded-full bg-[#FFE28A]/70 blur-3xl" />
-            <div className="absolute bottom-0 left-1/2 size-72 rounded-full bg-[#FFE28A]/60 blur-3xl" />
+            <div className="absolute bottom-0 left-1/2 size-72 rounded-full bg-[#FFE28A]/60 blur-3xl" /> */}
 
             <Honeybarrel className="right-[6%] top-[22%] animate-honey-drop opacity-38" />
             <Honeybarrel className="left-[10%] top-[62%] animate-honey-drop-delayed opacity-38" />
