@@ -96,10 +96,10 @@ export default async function PublicEventPage({ params }: PublicEventPageProps) 
                 {isAlldrickBabyShower && (
                     <>
                         <Pooh
-                            className="right-[7%] top-[22%] h-20 w-20 animate-honeycomb opacity-38 [--rotate:8deg]"
+                            className="right-[7%] top-[22%] h-20 w-20 animate-honeycomb opacity-38 lg:block [--rotate:8deg]"
                         />
                         <Pooh
-                            className="left-[4%] top-[20%] h-20 w-20 animate-honeycomb opacity-38 [--rotate:-20deg]"
+                            className="left-[4%] top-[20%] h-20 w-20 animate-honeycomb opacity-38 lg:block [--rotate:-20deg]"
                         />
                     </>
                 )}
