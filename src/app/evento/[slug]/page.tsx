@@ -53,7 +53,7 @@ export default async function PublicEventPage({ params }: PublicEventPageProps) 
         notFound();
     }
 
-    const isAlldrickBabyShower = slug === "baby-shower-de-alldrick-gutierrez";
+    const isAlldrickBabyShower = slug === "baby-shower-de-alldrick-gutierrez-650018";
     const messagesCount = await getApprovedMessagesCountByEventSlug(slug);
 
     return (
