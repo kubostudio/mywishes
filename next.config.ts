@@ -28,6 +28,20 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+    async redirects() {
+        return [
+            {
+                source: "/evento/baby-shower-de-alldrick-gutierrez",
+                destination: "/evento/baby-shower-de-alldrick-gutierrez-650018",
+                permanent: true,
+            },
+            {
+                source: "/evento/baby-shower-de-alldrick-gutierrez/:path+",
+                destination: "/evento/baby-shower-de-alldrick-gutierrez-650018/:path+",
+                permanent: true,
+            },
+        ];
+    },
     async headers() {
         return [
             {

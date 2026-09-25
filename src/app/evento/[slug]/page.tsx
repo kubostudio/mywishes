@@ -1,4 +1,4 @@
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import {
     CalendarDays,
     MapPin,
@@ -47,6 +47,11 @@ export async function generateMetadata({
 
 export default async function PublicEventPage({ params }: PublicEventPageProps) {
     const { slug } = await params;
+
+    if (slug === "baby-shower-de-alldrick-gutierrez") {
+        redirect("/evento/baby-shower-de-alldrick-gutierrez-650018");
+    }
+
     const event = await getPublicEventBySlug(slug);
 
     if (!event) {
