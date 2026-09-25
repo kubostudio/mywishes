@@ -1,4 +1,4 @@
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { ArrowLeft } from "lucide-react";
@@ -36,6 +36,11 @@ export default async function PublicMessagesPage({
     params,
 }: PublicMessagesPageProps) {
     const { slug } = await params;
+
+    if (slug === "baby-shower-de-alldrick-gutierrez") {
+        redirect("/evento/baby-shower-de-alldrick-gutierrez-650018/mensajes");
+    }
+
     const event = await getApprovedMessagesByEventSlug(slug);
 
     if (!event) {
